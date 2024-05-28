@@ -79,7 +79,7 @@ export default {
                         avatar: usuario.avatar,
                         rol: usuario.tipo_usuario
                     });
-                    this.$router.push('/admin/inicio'); 
+                    this.$router.push('/inicio'); 
                 })
                 .catch((error) => {
                     console.log(error);

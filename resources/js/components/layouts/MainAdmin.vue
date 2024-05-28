@@ -42,7 +42,7 @@
                             <div class="card-header p-0" id="headingOne">
                                 <h6 class="mb-0">
                                     <button class="btn btn-light w-100 text-left font-weight-bold p-menu" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="font-size:20px;">
-                                        <i class="fa fa-indent w-ico me-3"></i>CONVOCATORIA
+                                        <i class="fa fa-indent w-ico me-3"></i>MONITOREO
                                     </button>
                                 </h6>
                             </div>
