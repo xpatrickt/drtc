@@ -13,7 +13,9 @@ import Inicio from './components/pages/Inicio';
 
 //admin
 import MainAdmin from './components/layouts/MainAdmin';
+import MainGestion from './components/layouts/MainGestion';
 import InicioAdmin from './components/admin/Inicio';
+import InicioGestion from './components/admin/Gestion';
 import AsistenciaAdmin from './components/admin/Asistencia';
 
 
@@ -88,7 +90,17 @@ let routes = [
  
         ]
     },
-    
+    {
+        path: '/admin',
+        component: MainGestion,
+        meta: { requiresAuthAdmin: true },
+        redirect: '/admin/gestion',
+        children: [
+            { path: 'gestion', name: 'InicioGestion', component: InicioGestion },
+
+ 
+        ]
+    },
 ];
 
 const router = new Router({
