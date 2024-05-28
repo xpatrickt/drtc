@@ -27,7 +27,6 @@ class CreateEntrevistaTable extends Migration
             $table->integer('lenguaje_voz')->nullable();
             $table->integer('total_entrevista')->nullable();
             $table->double('fase3_ponderado')->nullable();
-            $table->string('estado',15)->nullable();
             $table->string('resultado',15)->nullable();
             $table->text('observaciones')->nullable();
             $table->boolean('estado');
