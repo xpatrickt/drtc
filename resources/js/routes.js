@@ -35,7 +35,7 @@ Vue.use(Router)
 let routes = [
     {
         path: '*', 
-        redirect: 'admin/inicio',
+        redirect: 'inicio',
     },
 
     {
@@ -50,7 +50,7 @@ let routes = [
     {
         path: '/',
         component: MainBlank,
-        redirect: 'admin/inicio',
+        redirect: 'inicio',
         children: [
             { path: 'login', name: 'Login', component: Login },
 
