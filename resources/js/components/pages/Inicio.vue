@@ -5,7 +5,7 @@
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
               <div class="col-10 col-xl-6 col-lg-8 col-md-8 align-items-center justify-content-center text-center shadow-sm bg-white text-dark rounded-lg ">
-                <img :src="$baseUrlVue('img/auth/alumno.png')" alt="" class="mt-3"/>
+                <img :src="$baseUrlVue('img/auth/gestionp.png')" alt="" class="mt-3"/>
                 <h5 class="my-4 font-weight-bold">
                   GESTIÓN DE PROYECTOS
                 </h5>
@@ -19,7 +19,7 @@
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
               <div class="col-10 col-xl-6 col-lg-8 col-md-8 align-items-center justify-content-center text-center shadow-sm bg-white text-dark rounded-lg ">
-                <img :src="$baseUrlVue('img/auth/docente.png')" alt="" class="mt-3"/>
+                <img :src="$baseUrlVue('img/auth/avance.jpg')" alt="" class="mt-3"/>
                 <h5 class="my-4 font-weight-bold">
                   AVANCE DE PROYECTOS
                 </h5>
@@ -33,7 +33,7 @@
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
               <div class="col-10 col-xl-6 col-lg-8 col-md-8 align-items-center justify-content-center text-center shadow-sm bg-white text-dark rounded-lg ">
-                <img :src="$baseUrlVue('img/auth/campus.png')" alt="" class="mt-3"/>
+                <img :src="$baseUrlVue('img/auth/seguimiento.jpg')" alt="" class="mt-3"/>
                 <h5 class="my-4 font-weight-bold">
                   SEGUIMIENTO Y REPORTES
                 </h5>
@@ -47,7 +47,7 @@
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
               <div class="col-10 col-xl-6 col-lg-8 col-md-8 align-items-center justify-content-center text-center shadow-sm bg-white text-dark rounded-lg ">
-                <img :src="$baseUrlVue('img/auth/gestion.png')" alt="" class="mt-3"/>
+                <img :src="$baseUrlVue('img/auth/administracion.jpg')" alt="" class="mt-3"/>
                 <h5 class="my-4 font-weight-bold">
                   ADMINISTRACIÓN Y CONFIGURACIÓN
                 </h5>
