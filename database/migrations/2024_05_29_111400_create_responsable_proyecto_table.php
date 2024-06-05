@@ -15,6 +15,11 @@ class CreateResponsableProyectoTable extends Migration
     {
         Schema::create('responsable_proyecto', function (Blueprint $table) {
             $table->id();
+            $table->string('funcion', 250);
+            $table->unsignedBigInteger('id_proyecto')->nullable();
+            $table->foreign('id_proyecto')->references('id')->on('proyecto');  
+            $table->unsignedBigInteger('id_persona')->nullable();
+            $table->foreign('id_persona')->references('id')->on('persona');            
             $table->timestamps();
         });
     }

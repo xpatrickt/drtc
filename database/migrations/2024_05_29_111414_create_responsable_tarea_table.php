@@ -15,6 +15,11 @@ class CreateResponsableTareaTable extends Migration
     {
         Schema::create('responsable_tarea', function (Blueprint $table) {
             $table->id();
+            $table->string('funcion', 250);
+            $table->unsignedBigInteger('id_tarea')->nullable();
+            $table->foreign('id_tarea')->references('id')->on('tarea');  
+            $table->unsignedBigInteger('id_persona')->nullable();
+            $table->foreign('id_persona')->references('id')->on('persona');            
             $table->timestamps();
         });
     }

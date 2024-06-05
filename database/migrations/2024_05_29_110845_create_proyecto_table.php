@@ -19,14 +19,9 @@ class CreateProyectoTable extends Migration
             $table->id();
             $table->string('nombre', 250);
             $table->string('descripcion', 600)->nullable();
-            $table->string('apellido_mat', 50)->nullable();
-            $table->string('sexo', 50)->nullable();
-            $table->string('grado', 50)->nullable();
-            $table->string('profesion', 50)->nullable();
-            $table->string('telefono2', 50)->nullable();
-            $table->date('fecha_nac')->nullable();
-            $table->string('documento')->nullable();
-            $table->string('direccion',225)->nullable();
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
+            $table->integer('estado')->nullable();
             $table->timestamps();
         });
     }
