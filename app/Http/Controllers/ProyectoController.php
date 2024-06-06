@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
 
-class Proyecto extends Controller
+class ProyectoController extends Controller
 {
-    //
-     //funciones generales de mantenimiento
      public function ver($id){
         $ver = Proyecto::findOrFail($id);
         return $ver;

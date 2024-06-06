@@ -30,8 +30,9 @@ import Notas from './components/admin/Notas';
 import ReporteNotas from './components/admin/ReporteNotas';
 import CriteriosCapacitacion from './components/admin/CriteriosCapacitacion';
 
-
-
+import Proyecto from './components/admin/Proyecto';
+import Tarea from './components/admin/Tarea';
+import SubTarea from './components/admin/Subtarea';
 Vue.use(Router)
 
 let routes = [
@@ -97,8 +98,9 @@ let routes = [
         redirect: '/admin/gestion',
         children: [
             { path: 'gestion', name: 'InicioGestion', component: InicioGestion },
-
- 
+            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
+            { path: 'tarea', name: 'Tarea', component: Tarea },
+            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
         ]
     },
 ];

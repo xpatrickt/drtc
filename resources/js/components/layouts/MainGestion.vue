@@ -56,18 +56,18 @@
                                     </li> -->
                                     
                                     <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('RecepcionCV')">
-                                            <i class="fas fa-tag me-3"></i>Registro de Proyectos
+                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Proyecto')">
+                                            <i class="fas fa-tag me-3"></i>Proyectos
                                         </a>
                                     </li>
                                     <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Grado')">
-                                            <i class="fas fa-tag me-3"></i>Reporte de Recepción
+                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Tarea')">
+                                            <i class="fas fa-tag me-3"></i>Tareas
                                         </a>
                                     </li>
                                     <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Grado')">
-                                            <i class="fas fa-tag me-3"></i>Reporte de Recepción
+                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('SubTarea')">
+                                            <i class="fas fa-tag me-3"></i>SubTareas
                                         </a>
                                     </li>
                                 </ul>
