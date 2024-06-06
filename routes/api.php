@@ -42,8 +42,9 @@ use App\Http\Controllers\CriterioController;
 use App\Http\Controllers\CapacitacionController;
 
 
-
-
+use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\SubTareaController;
+use App\Http\Controllers\TareaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,6 +150,43 @@ Route::middleware('auth:api')->group(function () {
     Route::put('activar/{id}', [OcupacionController::class, 'activar']);
 
   });
+
+    //Grupo Proyecto
+    Route::group(['prefix' => 'proyecto'], function () {
+      Route::get('ver/{id}', [ProyectoController::class, 'ver']);
+      Route::get('llenar_combo', [ProyectoController::class, 'llenarCombo']);
+      Route::get('listar', [ProyectoController::class, 'listar']);
+      Route::post('crear', [ProyectoController::class, 'crear']);
+      Route::put('modificar/{id}', [ProyectoController::class, 'modificar']);
+      Route::put('inactivar/{id}', [ProyectoController::class, 'inactivar']);
+      Route::put('activar/{id}', [ProyectoController::class, 'activar']);
+  
+    });
+
+      //Grupo Tarea
+  Route::group(['prefix' => 'tarea'], function () {
+    Route::get('ver/{id}', [TareaController::class, 'ver']);
+    Route::get('llenar_combo', [TareaController::class, 'llenarCombo']);
+    Route::get('listar', [TareaController::class, 'listar']);
+    Route::post('crear', [TareaController::class, 'crear']);
+    Route::put('modificar/{id}', [TareaController::class, 'modificar']);
+    Route::put('inactivar/{id}', [TareaController::class, 'inactivar']);
+    Route::put('activar/{id}', [TareaController::class, 'activar']);
+
+  });
+
+    //Grupo SubTarea
+    Route::group(['prefix' => 'subtarea'], function () {
+      Route::get('ver/{id}', [SubTareaController::class, 'ver']);
+      Route::get('llenar_combo', [SubTareaController::class, 'llenarCombo']);
+      Route::get('listar', [SubTareaController::class, 'listar']);
+      Route::post('crear', [SubTareaController::class, 'crear']);
+      Route::put('modificar/{id}', [SubTareaController::class, 'modificar']);
+      Route::put('inactivar/{id}', [SubTareaController::class, 'inactivar']);
+      Route::put('activar/{id}', [SubTareaController::class, 'activar']);
+  
+    });
+
 
   //Grupo Ocupaciones
   Route::group(['prefix' => 'calificacion'], function () {
