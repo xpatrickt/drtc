@@ -1,176 +1,456 @@
 <template>
     <div class="p-3 pt-5">
-        <div class="col-md-12" style="margin-left: -15px;">
-            <h4 class="text-color-2 mb-3">Registro de Proyectos</h4>
-        </div>
+         <div class="col-md-12" style="margin-left: -15px;"><button class="btn btn-outline-secondary float-right"  type="button" @click="nuevo"> Nuevo </button>
+        <h4 class="text-color-2 mb-3">Mantenimiento de Libros</h4></div>
         <br>
 
-        <div class="tab-pane fade show active" id="paso1" role="tabpanel" aria-labelledby="paso1-tab">
-            <div class="row">
+        <div class="table-responsive">
+            <vue-good-table
+            :columns="listarLibros.columns"
+            :rows="listarLibros.data"
+            :search-options="{
+                enabled: true,
+                placeholder: 'Buscar en la tabla',
+            }"
+            :pagination-options="{
+                enabled: true,
+                mode: 'pages',
+                nextLabel: 'Sig',
+                prevLabel: 'Ant',
+                rowsPerPageLabel: 'Registros por página',
+                ofLabel: 'de',
+                pageLabel: 'Página', // for 'pages' mode
+                allLabel: 'Todo',
+            }"
+            >
+            <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'options'">
+                <button class="btn btn-outline-secondary btn-sm btn-icon" @click.prevent="ver(props.row, props.index)" data-toggle="tooltip" title="Ver"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-outline-info btn-sm btn-icon" @click.prevent="editar(props.row, props.index)" data-toggle="tooltip" title="Editar"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn btn-outline-danger btn-sm btn-icon" @click.prevent="eliminar(props.row, props.index)" data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                </span>
+            </template>
+            </vue-good-table>
+        </div>
+        <!-- Modal -->
+        <template>
+            <div class="modal fade" id="modal-libro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle" v-text="modal.titulo"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" data-vv-scope="form_registro">
+                                <div class="form-group">
+                                    <p class="m-0">
+                                        <strong>Nombre</strong>
+                                    </p>
+                                    <input type="text"
+                                    v-model="modal.libro.nombre"
+                                    class="form-control"
+                                    data-vv-as="Nombre"
+                                    placeholder="Nombre"
+                                    name="nombre"
+                                    v-validate="'required|max:500'">
+                                    <span class="text-danger">{{errors.first("form_registro.nombre")}}</span>
+                                </div>
+                                <div class="form-group">
+                                    <p class="m-0">
+                                        <strong>Autor</strong>
+                                    </p>
+                                    <input type="text"
+                                    v-model="modal.libro.autor"
+                                    class="form-control"
+                                    data-vv-as="Autor"
+                                    placeholder="Autor"
+                                    name="autor"
+                                    v-validate="'required|max:500'">
+                                    <span class="text-danger">{{errors.first("form_registro.autor")}}</span>
+                                </div>
+                                <div class="form-group">
+                                    <p class="m-0">
+                                        <strong>Descripción</strong>
+                                    </p>
+                                    <input type="text"
+                                    v-model="modal.libro.descripcion"
+                                    class="form-control"
+                                    data-vv-as="Descripcion"
+                                    placeholder="Descripcion"
+                                    name="descripcion"
+                                    v-validate="'required|max:5000'">
+                                    <span class="text-danger">{{errors.first("form_registro.descripcion")}}</span>
+                                </div>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                  <li class="nav-item" role="presentation" @click="cambiarTipo()">
+                                    <button class="nav-link active" id="link-tab" data-toggle="tab" data-target="#link" type="button" role="tab" aria-controls="link" aria-selected="true">Copiar Link PDF</button>
+                                  </li>
+                                  <li class="nav-item" role="presentation" @click="cambiarTipo()">
+                                    <button class="nav-link" id="upload-tab" data-toggle="tab" data-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Subir archivo PDF</button>
+                                  </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                  <div class="tab-pane fade show active" id="link" role="tabpanel" aria-labelledby="link-tab">
+                                    <div class="form-group" v-if="!modal.libro.subido">
+                                        <p class="m-0">
+                                            <strong>URL</strong>
+                                        </p>
+                                        <input type="text"
+                                        v-model="modal.libro.url"
+                                        class="form-control"
+                                        data-vv-as="URL"
+                                        placeholder="URL"
+                                        name="url"
+                                        v-validate="'required|max:500'">
+                                        <span class="text-danger">{{errors.first("form_registro.url")}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="upload-tab">
+                                    <div class="form-group" v-if="modal.libro.subido">
+                                        <p class="m-0">
+                                            <strong>Ubicación</strong>
+                                        </p>
 
-            </div>
-            <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Listado de Proyectos</legend>
-                <div class="control-group">
-                    <div class="table-responsive">
-                        <vue-good-table :columns="listarRegistros.columns" :rows="listarRegistros.data" :search-options="{
-                            enabled: true,
-                            placeholder: 'Buscar en la tabla',
-                        }">
-                            <template slot="table-row" slot-scope="props">
-                              
-                                <span v-if="props.column.field == 'nombre'">
-                                    <input type="text" disabled v-model="props.row.nombre" class="form-control" data-vv-as="nombre"
-                                        placeholder="nombre" name="nombre" max="10" min="0" @change="pushData(props.index,'nombre', props.row.nombre)">
-                                </span>
-                                <span v-if="props.column.field == 'descripcion'">
-                                    <input type="text" disabled v-model="props.row.descripcion" class="form-control" data-vv-as="descripcion"
-                                        placeholder="descripcion" name="descripcion" max="10" min="0" @change="pushData(props.index,'descripcion', props.row.nombre)">
-                                </span>
-
-                            </template>
-                        </vue-good-table>
+                                        <div class="form-group row">
+                                            <div class="col-md-12">                                        
+                                                <input type="file" name="url" data-vv-as="URL" id="url" class="form-control" accept="application/pdf" v-validate="'required|max:500'"> 
+                                            </div>
+                                        </div>
+                                        <span class="text-danger">{{errors.first("form_registro.url")}}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                               
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <p class="m-0">
+                                            <strong>Nivel</strong>
+                                        </p>
+                                        <select name="nivel"
+                                        v-model="modal.nivelID"
+                                        class="form-control"
+                                        data-vv-as="Nivel"
+                                        placeholder="Seleccione nivel"
+                                        v-validate="'required'"
+                                        @change="listarGrado(modal.nivelID)">
+                                            <option v-for="row in listarNiveles" :key="row.id" :value="row.id" v-text="row.nombre" ></option>
+                                        </select>
+                                        <span class="text-danger">{{errors.first("form_registro.nivel")}}</span>
+                                      </div>
+                                    <div class="form-group col-md-4">
+                                        <p class="m-0">
+                                            <strong>Grado</strong>
+                                        </p>
+                                        <select name="id_grado"
+                                        class="form-control"
+                                        v-model="modal.grado_curso.id_grado"
+                                        data-vv-as="id_grado"
+                                        placeholder="Seleccione grado"
+                                        v-validate="'required'"
+                                        @change="listarCurso(modal.grado_curso.id_grado)"
+                                        >
+                                            <option v-for="row in listarGrados" :key="row.id" :value="row.id" v-text="row.grado" ></option>
+                                        </select>
+                                        <span class="text-danger">{{errors.first("form_registro.grado")}}</span>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <p class="m-0">
+                                            <strong>Curso</strong>
+                                        </p>
+                                        <select name="id_grado_curso"
+                                        class="form-control"
+                                        v-model="modal.libro.id_grado_cur "
+                                        data-vv-as="id_grado_curso"
+                                        placeholder="Seleccione curso"
+                                        v-validate="'required'"
+                                        >
+                                            <option v-for="row in listarCursos" :key="row.id" :value="row.id" v-text="row.curso.nombre" ></option>
+                                        </select>
+                                        <span class="text-danger">{{errors.first("form_registro.curso")}}</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" v-if="modal.tipo == 'nuevo'" class="btn btn-primary" @click="guardar">Guardar</button>
+                            <button type="button" v-else-if="modal.tipo == 'editar'" class="btn btn-primary" @click="modificar">Actualizar</button>
+                        </div>
                     </div>
-
                 </div>
-            </fieldset>
-        </div>
-        <div class="tab-pane fade" id="paso2" role="tabpanel" aria-labelledby="paso2-tab">
-
-        </div>
-        <div class="tab-pane fade" id="paso3" role="tabpanel" aria-labelledby="paso3-tab">
-
-        </div>
+            </div>
+        </template>
     </div>
 </template>
 
 <script>
-import Helper from "../../services/helper";
-import Crypt from "../../services/Crypt";
 
-export default {
-    name: 'Ayudas',
-    components: {
-    },
-    data() {
-        return {
-            idConvocatoria: '',
-            listarConvocatorias: [],
-            listarRegistros:{
-                data: [],
-                columns: [
+import Helper from "../../services/Helper";
+import Multiselect from "vue-multiselect";
 
-                    { label: "Nombre", field: "nombre" },
-                    { label: "Descripcion", field: "descripcion" },
-                    { label: "Inicio", field: "fecha_inicio" },
-                    { label: "Fin", field: "fecha_fin" },
-                    { label: "Estado", field: "estado" },
-                ],
-                total: 0,
-                filtrosBusqueda: {
-                    tipo: "",
-                    orden: "asc",
-                    ordenPor: "id",
-                    regPagina: "10",
+    export default {
+        name:'Ayudas',
+        components:{
+            Multiselect,
+        },
+        data(){
+            return{
+                listarLibros:{
+                    data: [],
+                    columns:[
+                        {label: 'Nombre', field: 'nombre',},
+                        {label: 'Autor', field: 'autor',},
+                        {label: 'Descripción', field: 'descripcion',},
+                        {label: 'Opciones', field: 'options',},
+                    ],
+                    total: 0,
+                    filtrosBusqueda:{
+                        tipo:'',
+                        orden: 'asc',
+                        ordenPor: 'id',
+                        regPagina: '10',
+                    },
+                    deshabilitarEdicion: false,
                 },
+                listarGradoCurso:[],
+                deshabilitado: false,
+                modal:{
+                    tipo: '',
+                    titulo:  '',
+                    nivelID: null,
+                    id_lib_cur: null,
+                    libro:{
+                        nombre:  '',
+                        autor: '',
+                        descripcion:'',
+                        url:'',
+                        subido: false,
+                        id_grado_cur:'',
+                    },
+                    grado_curso: {
+                        id: '',
+                        id_grado:'',
+                        id_curso:'',
+                        curso: {
+                            nombre: '',
+                        }
+                    },
+                },
+                curso: null,
+                listarNiveles:[],
+                listarGrados: [],
+                listarCursos: [],
+                editarDocumento: false,
+                documento: '',
 
-                deshabilitarEdicion: false,
-            },
-        }
-    },
-    created() {
-        this.listarConvocatoria();
-
-    },
-    methods: {
-        listarConvocatoria() {
-            axios.get("api/proyecto/listar")
+            }
+        },
+        created(){
+            this.listarLibro();
+            this.listarNivel();
+        },
+        methods:{
+            listarLibro(){
+                axios.get("api/libro/listar"+Helper.getFilterURL(this.listarLibros.filtrosBusqueda))
                 .then((response) => {
                     let data = response.data;
-                    this.listarConvocatorias = data;
+                    this.listarLibros.data = data;
                 })
                 .catch((error) => {
                     console.log(error);
                     this.$toastr.e(error.response.data.message);
-                });
-        },
-
-        limpiarFormulario() {
-            this.modal = {
-                titulo: '',
-                nivelID: null,
-                seccion: {
-                    seccion: '',
-                },
-                deshabilitado: false,
-            }
-            this.$validator.reset();
-        },
-        guardar() {
-            this.$validator.validateAll('form_registro').then(result => {
-                if (result) {
-                    axios.post("api/proyecto/crear", this.modal.proyecto)
-                        .then((response) => {
-                            this.$toastr.s(response.data.message);
-                            $("#modal-proyecto").modal('hide');
-                            this.listarproyecto();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            this.$toastr.e(error.response.data.message);
-                        });
-                }
-            });
-        },
-        modificar() {
-            this.$validator.validateAll('form_registro').then(result => {
-                if (result) {
-                    axios.put("api/proyecto/modificar/" + this.modal.proyectoID, this.modal.proyecto)
-                        .then((response) => {
-                            this.$toastr.s(response.data.message);
-                            $("#modal-proyecto").modal('hide');
-                            this.listarproyecto();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            this.$toastr.e(error.response.data.message);
-                        });
-                }
-            });
-        },
-        modificarNota(id, nota) {
-            const data = {
-                nota,
-            }
-            axios.put("api/examen/modificar/" + id, data)
+                }); 
+            },
+            listarNivel(){
+                axios.get("api/nivel/listar"+Helper.getFilterURL(this.listarLibros.filtrosBusqueda))
                 .then((response) => {
-                    this.$toastr.s(response);
-                    this.generarLista();
-                    
+                    let data = response.data;
+                    this.listarNiveles = data;
                 })
                 .catch((error) => {
                     console.log(error);
                     this.$toastr.e(error.response.data.message);
                 });
-
-        },
-        eliminar(row, index) {
-            this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
-                //
-                axios.put("api/proyecto/eliminar/" + row.id)
+            },
+            listarGrado(id_nivel) {
+                axios.get("api/grado/llenar_combo/" + id_nivel)
                     .then((response) => {
-                        this.$toastr.s(response.data.message);
-                        row.activo = false;
+                        let data = response.data;
+                        this.listarGrados = data;
+                        this.listarCursos = null;
                     })
                     .catch((error) => {
+                        console.log(error);
                         this.$toastr.e(error.response.data.message);
                     });
-                this.listarproyecto();
-            });
+            },
+            listarCurso(id_grado) {
+                axios.get("api/grado_curso/llenar_combo/" + id_grado)
+                    .then((response) => {
+                        let data = response.data;
+                        data.map(element => {
+                            element.nombre_curso = element.curso.nombre;
+                            return element;
+                        });
+                        this.listarCursos = data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.$toastr.e(error.response.data.message);
+                    });
+            },
+           
+            limpiarFormulario(){
+                this.modal = {
+                    titulo:  '',
+                    id_lib_cur: null,
+                    nivelID: null,
+                    libro:{
+                        nombre:  '',
+                        autor: '',
+                        descripcion:'',
+                        url:'',
+                        subido: false,
+                        id_grado_cur:'',
+                    },
+                    grado_curso: {
+                        id: '',
+                        id_grado:'',
+                        id_curso:'',
+                        curso: {
+                            nombre: '',
+                        }
+                    },
+                    deshabilitado: false,   
+                }
+                this.listarCursos = null;
+                this.$validator.reset();
+            },
+            nuevo(){
+                $("#modal-libro").modal('show');
+                this.limpiarFormulario();
+                this.modal.titulo = 'Nuevo libro';
+                this.modal.tipo = 'nuevo';
 
-        },
-        activar(row, index) {
-            axios.put("api/proyecto/activar/" + row.id)
+            },
+            ver(row, index){
+                $("#modal-libro").modal('show');
+                this.limpiarFormulario();
+                this.listarGrado(row.grado_curso.grado.id_nivel);
+                this.listarCurso(row.grado_curso.id_grado);
+                this.modal = {
+                    titulo:  'Ver libro',
+                    tipo: 'ver',
+                    id_libro: row.id,
+                    nivelID: row.grado_curso.grado.id_nivel,
+                    libro:{
+                        nombre: row.nombre,
+                        autor: row.autor,
+                        descripcion: row.descripcion,
+                        url: row.url,
+                        subido: row.subido,
+                        id_grado_cur: row.id_grado_cur,
+                    },
+                    grado_curso: row.grado_curso,
+                    deshabilitado: true,
+                }
+            },
+            editar(row, index){
+                $("#modal-libro").modal('show');
+                this.limpiarFormulario();
+                this.listarGrado(row.grado_curso.grado.id_nivel)
+                this.listarCurso(row.grado_curso.id_grado);
+                this.modal = {
+                    titulo:  'Editar libro',
+                    tipo: 'editar',
+                    id_libro: row.id,
+                    nivelID: row.grado_curso.grado.id_nivel,
+                    libro:{
+                        nombre: row.nombre,
+                        autor: row.autor,
+                        descripcion: row.descripcion,
+                        url: row.url,
+                        subido: row.subido,
+                        id_grado_cur: row.id_grado_cur,
+                    },
+                    grado_curso: row.grado_curso,
+                    deshabilitado: false
+                }
+            },
+            guardar(){
+                this.$validator.validateAll('form_registro').then(result => {
+                    if (result) { 
+
+                        if(this.modal.libro.subido){
+                            let _this = this;
+                            let data = new FormData();
+                            data.append('url', document.getElementById('url').files[0]);
+                            data.append('nombre', _this.modal.libro.nombre);
+                            data.append('autor', _this.modal.libro.autor);
+                            data.append('descripcion', _this.modal.libro.descripcion);
+                            data.append('subido', _this.modal.libro.subido);
+                            data.append('id_grado_cur', _this.modal.libro.id_grado_cur);
+                            axios.post("api/libro/crear", data)
+                            .then((response) => {
+                                this.$toastr.s(response.data.message);
+                                $("#modal-libro").modal('hide');
+                                this.listarLibro();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                this.$toastr.e(error.response.data.message);
+                            });
+                        } else {
+                            axios.post("api/libro/crear", this.modal.libro)
+                            .then((response) => {
+                                this.$toastr.s(response.data.message);
+                                $("#modal-libro").modal('hide');
+                                this.listarLibro();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                this.$toastr.e(error.response.data.message);
+                            });
+                        }
+                    }
+                }); 
+            },
+            modificar(){
+                this.$validator.validateAll('form_registro').then(result => {
+                    if (result) {  
+                        axios.put("api/libro/modificar/" + this.modal.id_libro, this.modal.libro)
+                        .then((response) => {
+                            this.$toastr.s(response.data.message);
+                            $("#modal-libro").modal('hide');
+                            this.listarLibro();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toastr.e(error.response.data.message);
+                        });
+                    }
+                }); 
+            },
+            eliminar(row, index){
+                 this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
+                  //
+                  axios.put("api/libro/eliminar/"+row.id)
+                .then((response) => {
+                    this.$toastr.s(response.data.message);
+                    row.activo = false;
+                })
+                .catch((error) => {
+                    this.$toastr.e(error.response.data.message);
+                });
+                this.listarLibro();
+                });
+                
+            },
+            activar(row, index){
+                axios.put("api/libro/activar/"+row.id)
                 .then((response) => {
                     this.$toastr.s(response.data.message);
                     row.activo = true;
@@ -178,52 +458,34 @@ export default {
                 .catch((error) => {
                     this.$toastr.e(error.response.data.message);
                 });
-        },
-        generarLista() {
-            let datos = {
-                convocatoria: this.idConvocatoria,
-                provincia: this.idProcincia,
+            },
+           
+            exportar(){
+                let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarLibros.filtrosBusqueda);
+                window.open(url);
+            },
+            
+            cambiarTipo(){
+                this.modal.libro.subido = !this.modal.libro.subido;
+                this.modal.libro.url = ''
+            },
+
+            cambiarDocumento(){
+
             }
-            console.log(datos);
-            axios.post("api/examen/generar", datos)
-                .then((response) => {
-                    this.listarRegistros.data = response.data;
-                    this.$toastr.s(response.data.message);
-                })
-                .catch((error) => {
-                    console.log("error");
-                });
-
-
         },
-        obtenerTipo(row) {
-            if (row.tipo == 1) return 'Inicio';
-            else if (row.tipo == 2) return 'Pregunta';
-            else if (row.tipo == 1) return 'Publicación';
-
-        },
-        exportar() {
-            let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarSecciones.filtrosBusqueda);
-            window.open(url);
-        }
-
-    },
-}
+    }
 </script>
 <style >
-fieldset.scheduler-border {
-    border: 1px solid #dee2e6 !important;
-    padding: 0 1.4em 1.4em 1.4em !important;
-    margin: 0 0 1.5em 0 !important;
-    -webkit-box-shadow: 0px 0px 0px 0px #000;
-    box-shadow: 0px 0px 0px 0px #000;
+
+#myTabContent{
+    border: 1px solid;
+    border-top: none;
+    border-color: #dee2e6;
+    padding: 1rem 1rem 0 1rem;
+    margin-bottom: 1rem;
 }
 
-legend.scheduler-border {
-    font-size: 1rem !important;
-    font-weight: bold !important;
-    text-align: left !important;
-    border: none;
-    width: 120px;
-}
 </style>
+
+  

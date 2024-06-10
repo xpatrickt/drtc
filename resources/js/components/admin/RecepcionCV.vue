@@ -4,16 +4,7 @@
             <h4 class="text-color-2 mb-3">CONVOCATORIA: Registro de Recepcion de CV</h4>
         </div>
         <br>
-        <!-- <div class="form-group col-3">
-            <p class="m-0">
-                <strong>Convocatoria</strong>
-            </p>
-            <select name="convocatoria" v-model="idConvocatoria" class="form-control" data-vv-as="Convocatoria"
-                placeholder="Seleccione Convocatoria" v-validate="'required'">
-                <option v-for="row in listarConvocatorias" :key="row.id" :value="row.id" v-text="row.nombre"></option>
-            </select>
-            <span class="text-danger">{{errors.first("form_registro.nivel")}}</span>
-        </div> -->
+
         <div class="row justify-content-md-center">
             <div class="col-md-5">
                 <div class="form-group">
