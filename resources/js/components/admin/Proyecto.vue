@@ -5,47 +5,48 @@
         </div>
         <br>
 
-        <div class="row justify-content-md-center">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="">Nombre</label>
-                    <input type="text" name="" class="form-control" v-model="numeroDni" @keyup.enter="buscar">
-                </div>
+        <div class="tab-pane fade show active" id="paso1" role="tabpanel" aria-labelledby="paso1-tab">
+            <div class="row">
+
             </div>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Listado de Proyectos</legend>
+                <div class="control-group">
+                    <div class="table-responsive">
+                        <vue-good-table :columns="listarRegistros.columns" :rows="listarRegistros.data" :search-options="{
+                            enabled: true,
+                            placeholder: 'Buscar en la tabla',
+                        }">
+                            <template slot="table-row" slot-scope="props">
+                              
+                                <span v-if="props.column.field == 'nombre'">
+                                    <input type="text" disabled v-model="props.row.nombre" class="form-control" data-vv-as="nombre"
+                                        placeholder="nombre" name="nombre" max="10" min="0" @change="pushData(props.index,'nombre', props.row.nombre)">
+                                </span>
+                                <span v-if="props.column.field == 'descripcion'">
+                                    <input type="text" disabled v-model="props.row.descripcion" class="form-control" data-vv-as="descripcion"
+                                        placeholder="descripcion" name="descripcion" max="10" min="0" @change="pushData(props.index,'descripcion', props.row.nombre)">
+                                </span>
+
+                            </template>
+                        </vue-good-table>
+                    </div>
+
+                </div>
+            </fieldset>
         </div>
-        <div class="row justify-content-md-center">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="">DOCUMENTO</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.documento" disabled>
-                </div><div class="form-group">
-                    <label for="">APELLIDOS</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.apellidos" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="">NOMBRES</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.nombres" disabled>
-                </div>
-                <div class="form-group" disabled>
-                    <label for="">SEDE PROVINCIAL</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.provincia" disabled>
-                </div>
-                <div class="form-group" disabled>
-                    <label for="">CARGO</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.cargo" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="">REGISTRO</label>
-                    <input type="text" name="" class="form-control" v-model="mostrar.num_registro" disabled>
-                </div>
-            </div>
+        <div class="tab-pane fade" id="paso2" role="tabpanel" aria-labelledby="paso2-tab">
+
         </div>
-        <hr>
+        <div class="tab-pane fade" id="paso3" role="tabpanel" aria-labelledby="paso3-tab">
+
+        </div>
     </div>
 </template>
 
 <script>
-
+import Helper from "../../services/helper";
+import Crypt from "../../services/Crypt";
 
 export default {
     name: 'Ayudas',
@@ -53,67 +54,37 @@ export default {
     },
     data() {
         return {
-            numeroDni: '',
             idConvocatoria: '',
             listarConvocatorias: [],
-            filtrosBusqueda: {
-                tipo: '',
-                orden: 'asc',
-                ordenPor: 'apellido_pat',
+            listarRegistros:{
+                data: [],
+                columns: [
+
+                    { label: "Nombre", field: "nombre" },
+                    { label: "Descripcion", field: "descripcion" },
+                    { label: "Inicio", field: "fecha_inicio" },
+                    { label: "Fin", field: "fecha_fin" },
+                    { label: "Estado", field: "estado" },
+                ],
+                total: 0,
+                filtrosBusqueda: {
+                    tipo: "",
+                    orden: "asc",
+                    ordenPor: "id",
+                    regPagina: "10",
+                },
+
+                deshabilitarEdicion: false,
             },
-            mostrar: {
-                documento : '',
-                apellidos: '',
-                nombres: '',
-                provincia: '',
-                cargo: '',
-                num_registro: '',
-            }
         }
     },
     created() {
         this.listarConvocatoria();
+
     },
     methods: {
-        buscar() {
-            axios.get("api/evaluacion/ver/" + this.numeroDni)
-                .then((response) => {
-                    let data = response.data;
-                    this.mostrar.documento=this.numeroDni;
-                    if (response.data.flag == 0) {
-                        this.$toastr.e(response.data.message);
-                        this.mostrar.apellidos = data.persona[0].apellido_pat + " " + data.persona[0].apellido_mat;
-                        this.mostrar.documento = data.persona[0].documento;
-                        this.mostrar.nombres = data.persona[0].nombres;
-                        this.mostrar.provincia = data.provincia.nombre_sede;
-                        this.mostrar.cargo = data.cargo;
-                        this.mostrar.num_registro = data.num_registro;
-                        console.log(data);
-                        console.log(this.mostrar);
-                        this.numeroDni='';
-                    } else if(response.data.flag == 1) {
-                        this.$toastr.s(response.data.message);
-                        this.mostrar.apellidos = data.persona[0].apellido_pat + " " + data.persona[0].apellido_mat;
-                        this.mostrar.documento = data.persona[0].documento;
-                        this.mostrar.nombres = data.persona[0].nombres;
-                        this.mostrar.cargo = data.cargo;
-                        this.mostrar.provincia = data.provincia.nombre_sede;
-                        this.mostrar.num_registro = data.num_registro;
-                        this.numeroDni='';
-
-                    }
-                    else{ this.$toastr.e(response.data.message);}
-                    //         this.listaAlumnos.data=response.data.lista;
-                    //         console.log(this.listaAlumnos);
-                    // let dni = response.data;
-                    // console.log(dni);
-                })
-                .catch((error) => {
-                    console.log("error");
-                });
-        },
         listarConvocatoria() {
-            axios.get("api/convocatoria/listar")
+            axios.get("api/proyecto/listar")
                 .then((response) => {
                     let data = response.data;
                     this.listarConvocatorias = data;
@@ -123,7 +94,136 @@ export default {
                     this.$toastr.e(error.response.data.message);
                 });
         },
+
+        limpiarFormulario() {
+            this.modal = {
+                titulo: '',
+                nivelID: null,
+                seccion: {
+                    seccion: '',
+                },
+                deshabilitado: false,
+            }
+            this.$validator.reset();
+        },
+        guardar() {
+            this.$validator.validateAll('form_registro').then(result => {
+                if (result) {
+                    axios.post("api/proyecto/crear", this.modal.proyecto)
+                        .then((response) => {
+                            this.$toastr.s(response.data.message);
+                            $("#modal-proyecto").modal('hide');
+                            this.listarproyecto();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toastr.e(error.response.data.message);
+                        });
+                }
+            });
+        },
+        modificar() {
+            this.$validator.validateAll('form_registro').then(result => {
+                if (result) {
+                    axios.put("api/proyecto/modificar/" + this.modal.proyectoID, this.modal.proyecto)
+                        .then((response) => {
+                            this.$toastr.s(response.data.message);
+                            $("#modal-proyecto").modal('hide');
+                            this.listarproyecto();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toastr.e(error.response.data.message);
+                        });
+                }
+            });
+        },
+        modificarNota(id, nota) {
+            const data = {
+                nota,
+            }
+            axios.put("api/examen/modificar/" + id, data)
+                .then((response) => {
+                    this.$toastr.s(response);
+                    this.generarLista();
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toastr.e(error.response.data.message);
+                });
+
+        },
+        eliminar(row, index) {
+            this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
+                //
+                axios.put("api/proyecto/eliminar/" + row.id)
+                    .then((response) => {
+                        this.$toastr.s(response.data.message);
+                        row.activo = false;
+                    })
+                    .catch((error) => {
+                        this.$toastr.e(error.response.data.message);
+                    });
+                this.listarproyecto();
+            });
+
+        },
+        activar(row, index) {
+            axios.put("api/proyecto/activar/" + row.id)
+                .then((response) => {
+                    this.$toastr.s(response.data.message);
+                    row.activo = true;
+                })
+                .catch((error) => {
+                    this.$toastr.e(error.response.data.message);
+                });
+        },
+        generarLista() {
+            let datos = {
+                convocatoria: this.idConvocatoria,
+                provincia: this.idProcincia,
+            }
+            console.log(datos);
+            axios.post("api/examen/generar", datos)
+                .then((response) => {
+                    this.listarRegistros.data = response.data;
+                    this.$toastr.s(response.data.message);
+                })
+                .catch((error) => {
+                    console.log("error");
+                });
+
+
+        },
+        obtenerTipo(row) {
+            if (row.tipo == 1) return 'Inicio';
+            else if (row.tipo == 2) return 'Pregunta';
+            else if (row.tipo == 1) return 'Publicación';
+
+        },
+        exportar() {
+            let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarSecciones.filtrosBusqueda);
+            window.open(url);
+        }
+
     },
 }
 </script>
-<style ></style>
+<style >
+fieldset.scheduler-border {
+    border: 1px solid #dee2e6 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    border: none;
+    width: 120px;
+}
+</style>
