@@ -23,7 +23,7 @@ class COnvocatoriaController extends Controller
    
     public function listar(){
         $user = auth()->user();        
-        $lista = Convocatoria::select('id', 'nombre')->where('nivel','>',$user->tipo_usuario)->get();
+        $lista = Convocatoria::select('id', 'nombre')->get();
         return $lista;
     }
 

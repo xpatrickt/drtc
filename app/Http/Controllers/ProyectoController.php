@@ -13,7 +13,7 @@ class ProyectoController extends Controller
     }
     
     public function llenarCombo(){
-        $select = Proyecto::select('id', 'nombre')->where('activo',true)->get();
+        $select = Proyecto::select('id', 'nombre')->get();
         return $select;
     }
    
