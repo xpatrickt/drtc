@@ -1,0 +1,217 @@
+<template>
+    <div class="p-3 pt-5">
+        <div class="col-md-12" style="margin-left: -15px;">
+            <h4 class="text-color-2 mb-3">Registro de Proyectos</h4>
+        </div>
+        <br>
+
+        <div class="tab-pane fade show active" id="paso1" role="tabpanel" aria-labelledby="paso1-tab">
+            <div class="row">
+
+            </div>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Listado de Proyectos</legend>
+                <div class="control-group">
+                    <div class="table-responsive">
+                        <vue-good-table :columns="listarRegistros.columns" :rows="listarRegistros.data" :search-options="{
+                            enabled: true,
+                            placeholder: 'Buscar en la tabla',
+                        }">
+
+                        </vue-good-table>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+        <div class="tab-pane fade" id="paso2" role="tabpanel" aria-labelledby="paso2-tab">
+
+        </div>
+        <div class="tab-pane fade" id="paso3" role="tabpanel" aria-labelledby="paso3-tab">
+
+        </div>
+    </div>
+</template>
+
+<script>
+import Helper from "../../services/helper";
+import Crypt from "../../services/Crypt";
+
+export default {
+    name: 'Ayudas',
+    components: {
+    },
+    data() {
+        return {
+            idProyecto: '',
+            listarConvocatorias: [],
+            listarRegistros:{
+                data: [],
+                columns: [
+
+                    { label: "Nombre", field: "nombre" },
+                    { label: "Descripcion", field: "descripcion" },
+                    { label: "Inicio", field: "fecha_inicio" },
+                    { label: "Fin", field: "fecha_fin" },
+                    { label: "Estado", field: "estado" },
+                ],
+                total: 0,
+                filtrosBusqueda: {
+                    tipo: "",
+                    orden: "asc",
+                    ordenPor: "id",
+                    regPagina: "10",
+                },
+
+                deshabilitarEdicion: false,
+            },
+        }
+    },
+    created() {
+        this.listarConvocatoria();
+
+    },
+    methods: {
+        listarConvocatoria() {
+            axios.get("api/proyecto/listar")
+                .then((response) => {
+                    let data = response.data;
+                    this.listarRegistros.data = data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toastr.e(error.response.data.message);
+                });
+        },
+
+        limpiarFormulario() {
+            this.modal = {
+                titulo: '',
+                nivelID: null,
+                seccion: {
+                    seccion: '',
+                },
+                deshabilitado: false,
+            }
+            this.$validator.reset();
+        },
+        guardar() {
+            this.$validator.validateAll('form_registro').then(result => {
+                if (result) {
+                    axios.post("api/proyecto/crear", this.modal.proyecto)
+                        .then((response) => {
+                            this.$toastr.s(response.data.message);
+                            $("#modal-proyecto").modal('hide');
+                            this.listarproyecto();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toastr.e(error.response.data.message);
+                        });
+                }
+            });
+        },
+        modificar() {
+            this.$validator.validateAll('form_registro').then(result => {
+                if (result) {
+                    axios.put("api/proyecto/modificar/" + this.modal.proyectoID, this.modal.proyecto)
+                        .then((response) => {
+                            this.$toastr.s(response.data.message);
+                            $("#modal-proyecto").modal('hide');
+                            this.listarproyecto();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toastr.e(error.response.data.message);
+                        });
+                }
+            });
+        },
+        modificarNota(id, nota) {
+            const data = {
+                nota,
+            }
+            axios.put("api/examen/modificar/" + id, data)
+                .then((response) => {
+                    this.$toastr.s(response);
+                    this.generarLista();
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toastr.e(error.response.data.message);
+                });
+
+        },
+        eliminar(row, index) {
+            this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
+                //
+                axios.put("api/proyecto/eliminar/" + row.id)
+                    .then((response) => {
+                        this.$toastr.s(response.data.message);
+                        row.activo = false;
+                    })
+                    .catch((error) => {
+                        this.$toastr.e(error.response.data.message);
+                    });
+                this.listarproyecto();
+            });
+
+        },
+        activar(row, index) {
+            axios.put("api/proyecto/activar/" + row.id)
+                .then((response) => {
+                    this.$toastr.s(response.data.message);
+                    row.activo = true;
+                })
+                .catch((error) => {
+                    this.$toastr.e(error.response.data.message);
+                });
+        },
+        generarLista() {
+            let datos = {
+                convocatoria: this.idProyecto,
+            }
+            console.log(datos);
+            axios.post("api/proyecto/generar", datos)
+                .then((response) => {
+                    this.listarRegistros.data = response.data;
+                    this.$toastr.s(response.data.message);
+                })
+                .catch((error) => {
+                    console.log("error");
+                });
+
+
+        },
+        obtenerTipo(row) {
+            if (row.tipo == 1) return 'Inicio';
+            else if (row.tipo == 2) return 'Pregunta';
+            else if (row.tipo == 1) return 'Publicación';
+
+        },
+        exportar() {
+            let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarSecciones.filtrosBusqueda);
+            window.open(url);
+        }
+
+    },
+}
+</script>
+<style >
+fieldset.scheduler-border {
+    border: 1px solid #dee2e6 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    border: none;
+    width: 120px;
+}
+</style>

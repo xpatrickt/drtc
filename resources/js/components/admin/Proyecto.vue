@@ -1,13 +1,12 @@
 <template>
     <div class="p-3 pt-5">
          <div class="col-md-12" style="margin-left: -15px;"><button class="btn btn-outline-secondary float-right"  type="button" @click="nuevo"> Nuevo </button>
-        <h4 class="text-color-2 mb-3">Mantenimiento de Libros</h4></div>
+        <h4 class="text-color-2 mb-3">Mantenimiento de Proyectos</h4></div>
         <br>
-
         <div class="table-responsive">
             <vue-good-table
-            :columns="listarLibros.columns"
-            :rows="listarLibros.data"
+            :columns="listarProyectos.columns"
+            :rows="listarProyectos.data"
             :search-options="{
                 enabled: true,
                 placeholder: 'Buscar en la tabla',
@@ -34,7 +33,7 @@
         </div>
         <!-- Modal -->
         <template>
-            <div class="modal fade" id="modal-libro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="modal-proyecto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -50,7 +49,7 @@
                                         <strong>Nombre</strong>
                                     </p>
                                     <input type="text"
-                                    v-model="modal.libro.nombre"
+                                    v-model="modal.proyecto.nombre"
                                     class="form-control"
                                     data-vv-as="Nombre"
                                     placeholder="Nombre"
@@ -58,25 +57,13 @@
                                     v-validate="'required|max:500'">
                                     <span class="text-danger">{{errors.first("form_registro.nombre")}}</span>
                                 </div>
-                                <div class="form-group">
-                                    <p class="m-0">
-                                        <strong>Autor</strong>
-                                    </p>
-                                    <input type="text"
-                                    v-model="modal.libro.autor"
-                                    class="form-control"
-                                    data-vv-as="Autor"
-                                    placeholder="Autor"
-                                    name="autor"
-                                    v-validate="'required|max:500'">
-                                    <span class="text-danger">{{errors.first("form_registro.autor")}}</span>
-                                </div>
+
                                 <div class="form-group">
                                     <p class="m-0">
                                         <strong>Descripción</strong>
                                     </p>
                                     <input type="text"
-                                    v-model="modal.libro.descripcion"
+                                    v-model="modal.proyecto.descripcion"
                                     class="form-control"
                                     data-vv-as="Descripcion"
                                     placeholder="Descripcion"
@@ -94,12 +81,12 @@
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
                                   <div class="tab-pane fade show active" id="link" role="tabpanel" aria-labelledby="link-tab">
-                                    <div class="form-group" v-if="!modal.libro.subido">
+                                    <div class="form-group" v-if="!modal.proyecto.subido">
                                         <p class="m-0">
                                             <strong>URL</strong>
                                         </p>
                                         <input type="text"
-                                        v-model="modal.libro.url"
+                                        v-model="modal.proyecto.url"
                                         class="form-control"
                                         data-vv-as="URL"
                                         placeholder="URL"
@@ -109,7 +96,7 @@
                                     </div>
                                   </div>
                                   <div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="upload-tab">
-                                    <div class="form-group" v-if="modal.libro.subido">
+                                    <div class="form-group" v-if="modal.proyecto.subido">
                                         <p class="m-0">
                                             <strong>Ubicación</strong>
                                         </p>
@@ -123,55 +110,7 @@
                                     </div>
                                   </div>
                                 </div>
-                               
-                                <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <p class="m-0">
-                                            <strong>Nivel</strong>
-                                        </p>
-                                        <select name="nivel"
-                                        v-model="modal.nivelID"
-                                        class="form-control"
-                                        data-vv-as="Nivel"
-                                        placeholder="Seleccione nivel"
-                                        v-validate="'required'"
-                                        @change="listarGrado(modal.nivelID)">
-                                            <option v-for="row in listarNiveles" :key="row.id" :value="row.id" v-text="row.nombre" ></option>
-                                        </select>
-                                        <span class="text-danger">{{errors.first("form_registro.nivel")}}</span>
-                                      </div>
-                                    <div class="form-group col-md-4">
-                                        <p class="m-0">
-                                            <strong>Grado</strong>
-                                        </p>
-                                        <select name="id_grado"
-                                        class="form-control"
-                                        v-model="modal.grado_curso.id_grado"
-                                        data-vv-as="id_grado"
-                                        placeholder="Seleccione grado"
-                                        v-validate="'required'"
-                                        @change="listarCurso(modal.grado_curso.id_grado)"
-                                        >
-                                            <option v-for="row in listarGrados" :key="row.id" :value="row.id" v-text="row.grado" ></option>
-                                        </select>
-                                        <span class="text-danger">{{errors.first("form_registro.grado")}}</span>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <p class="m-0">
-                                            <strong>Curso</strong>
-                                        </p>
-                                        <select name="id_grado_curso"
-                                        class="form-control"
-                                        v-model="modal.libro.id_grado_cur "
-                                        data-vv-as="id_grado_curso"
-                                        placeholder="Seleccione curso"
-                                        v-validate="'required'"
-                                        >
-                                            <option v-for="row in listarCursos" :key="row.id" :value="row.id" v-text="row.curso.nombre" ></option>
-                                        </select>
-                                        <span class="text-danger">{{errors.first("form_registro.curso")}}</span>
-                                    </div>
-                                </div>
+
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -188,8 +127,9 @@
 
 <script>
 
-import Helper from "../../services/Helper";
 import Multiselect from "vue-multiselect";
+import Helper from "../../services/helper";
+import Crypt from "../../services/Crypt";
 
     export default {
         name:'Ayudas',
@@ -198,12 +138,14 @@ import Multiselect from "vue-multiselect";
         },
         data(){
             return{
-                listarLibros:{
+                listarProyectos:{
                     data: [],
                     columns:[
                         {label: 'Nombre', field: 'nombre',},
-                        {label: 'Autor', field: 'autor',},
                         {label: 'Descripción', field: 'descripcion',},
+                        {label: 'Inicio', field: 'fecha_inicio',},
+                        {label: 'Fin', field: 'fecha_fin',},
+                        {label: 'Estado', field: 'estado',},
                         {label: 'Opciones', field: 'options',},
                     ],
                     total: 0,
@@ -222,7 +164,7 @@ import Multiselect from "vue-multiselect";
                     titulo:  '',
                     nivelID: null,
                     id_lib_cur: null,
-                    libro:{
+                    proyecto:{
                         nombre:  '',
                         autor: '',
                         descripcion:'',
@@ -230,14 +172,7 @@ import Multiselect from "vue-multiselect";
                         subido: false,
                         id_grado_cur:'',
                     },
-                    grado_curso: {
-                        id: '',
-                        id_grado:'',
-                        id_curso:'',
-                        curso: {
-                            nombre: '',
-                        }
-                    },
+
                 },
                 curso: null,
                 listarNiveles:[],
@@ -249,66 +184,26 @@ import Multiselect from "vue-multiselect";
             }
         },
         created(){
-            this.listarLibro();
-            this.listarNivel();
+            this.listarProyecto();
         },
         methods:{
-            listarLibro(){
-                axios.get("api/libro/listar"+Helper.getFilterURL(this.listarLibros.filtrosBusqueda))
+            listarProyecto(){
+                axios.get("api/proyecto/listar"+Helper.getFilterURL(this.listarProyectos.filtrosBusqueda))
                 .then((response) => {
                     let data = response.data;
-                    this.listarLibros.data = data;
+                    this.listarProyectos.data = data;
                 })
                 .catch((error) => {
                     console.log(error);
                     this.$toastr.e(error.response.data.message);
                 }); 
             },
-            listarNivel(){
-                axios.get("api/nivel/listar"+Helper.getFilterURL(this.listarLibros.filtrosBusqueda))
-                .then((response) => {
-                    let data = response.data;
-                    this.listarNiveles = data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.$toastr.e(error.response.data.message);
-                });
-            },
-            listarGrado(id_nivel) {
-                axios.get("api/grado/llenar_combo/" + id_nivel)
-                    .then((response) => {
-                        let data = response.data;
-                        this.listarGrados = data;
-                        this.listarCursos = null;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.$toastr.e(error.response.data.message);
-                    });
-            },
-            listarCurso(id_grado) {
-                axios.get("api/grado_curso/llenar_combo/" + id_grado)
-                    .then((response) => {
-                        let data = response.data;
-                        data.map(element => {
-                            element.nombre_curso = element.curso.nombre;
-                            return element;
-                        });
-                        this.listarCursos = data;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.$toastr.e(error.response.data.message);
-                    });
-            },
-           
-            limpiarFormulario(){
+        limpiarFormulario(){
                 this.modal = {
                     titulo:  '',
                     id_lib_cur: null,
                     nivelID: null,
-                    libro:{
+                    proyecto:{
                         nombre:  '',
                         autor: '',
                         descripcion:'',
@@ -316,37 +211,29 @@ import Multiselect from "vue-multiselect";
                         subido: false,
                         id_grado_cur:'',
                     },
-                    grado_curso: {
-                        id: '',
-                        id_grado:'',
-                        id_curso:'',
-                        curso: {
-                            nombre: '',
-                        }
-                    },
                     deshabilitado: false,   
                 }
                 this.listarCursos = null;
                 this.$validator.reset();
             },
             nuevo(){
-                $("#modal-libro").modal('show');
+                $("#modal-proyecto").modal('show');
                 this.limpiarFormulario();
-                this.modal.titulo = 'Nuevo libro';
+                this.modal.titulo = 'Nuevo proyecto';
                 this.modal.tipo = 'nuevo';
 
             },
             ver(row, index){
-                $("#modal-libro").modal('show');
+                $("#modal-proyecto").modal('show');
                 this.limpiarFormulario();
                 this.listarGrado(row.grado_curso.grado.id_nivel);
                 this.listarCurso(row.grado_curso.id_grado);
                 this.modal = {
-                    titulo:  'Ver libro',
+                    titulo:  'Ver proyecto',
                     tipo: 'ver',
-                    id_libro: row.id,
+                    id_proyecto: row.id,
                     nivelID: row.grado_curso.grado.id_nivel,
-                    libro:{
+                    proyecto:{
                         nombre: row.nombre,
                         autor: row.autor,
                         descripcion: row.descripcion,
@@ -359,16 +246,16 @@ import Multiselect from "vue-multiselect";
                 }
             },
             editar(row, index){
-                $("#modal-libro").modal('show');
+                $("#modal-proyecto").modal('show');
                 this.limpiarFormulario();
                 this.listarGrado(row.grado_curso.grado.id_nivel)
                 this.listarCurso(row.grado_curso.id_grado);
                 this.modal = {
-                    titulo:  'Editar libro',
+                    titulo:  'Editar proyecto',
                     tipo: 'editar',
-                    id_libro: row.id,
+                    id_proyecto: row.id,
                     nivelID: row.grado_curso.grado.id_nivel,
-                    libro:{
+                    proyecto:{
                         nombre: row.nombre,
                         autor: row.autor,
                         descripcion: row.descripcion,
@@ -384,31 +271,31 @@ import Multiselect from "vue-multiselect";
                 this.$validator.validateAll('form_registro').then(result => {
                     if (result) { 
 
-                        if(this.modal.libro.subido){
+                        if(this.modal.proyecto.subido){
                             let _this = this;
                             let data = new FormData();
                             data.append('url', document.getElementById('url').files[0]);
-                            data.append('nombre', _this.modal.libro.nombre);
-                            data.append('autor', _this.modal.libro.autor);
-                            data.append('descripcion', _this.modal.libro.descripcion);
-                            data.append('subido', _this.modal.libro.subido);
-                            data.append('id_grado_cur', _this.modal.libro.id_grado_cur);
-                            axios.post("api/libro/crear", data)
+                            data.append('nombre', _this.modal.proyecto.nombre);
+                            data.append('autor', _this.modal.proyecto.autor);
+                            data.append('descripcion', _this.modal.proyecto.descripcion);
+                            data.append('subido', _this.modal.proyecto.subido);
+                            data.append('id_grado_cur', _this.modal.proyecto.id_grado_cur);
+                            axios.post("api/proyecto/crear", data)
                             .then((response) => {
                                 this.$toastr.s(response.data.message);
-                                $("#modal-libro").modal('hide');
-                                this.listarLibro();
+                                $("#modal-proyecto").modal('hide');
+                                this.listarProyecto();
                             })
                             .catch((error) => {
                                 console.log(error);
                                 this.$toastr.e(error.response.data.message);
                             });
                         } else {
-                            axios.post("api/libro/crear", this.modal.libro)
+                            axios.post("api/proyecto/crear", this.modal.proyecto)
                             .then((response) => {
                                 this.$toastr.s(response.data.message);
-                                $("#modal-libro").modal('hide');
-                                this.listarLibro();
+                                $("#modal-proyecto").modal('hide');
+                                this.listarProyecto();
                             })
                             .catch((error) => {
                                 console.log(error);
@@ -421,11 +308,11 @@ import Multiselect from "vue-multiselect";
             modificar(){
                 this.$validator.validateAll('form_registro').then(result => {
                     if (result) {  
-                        axios.put("api/libro/modificar/" + this.modal.id_libro, this.modal.libro)
+                        axios.put("api/proyecto/modificar/" + this.modal.id_proyecto, this.modal.proyecto)
                         .then((response) => {
                             this.$toastr.s(response.data.message);
-                            $("#modal-libro").modal('hide');
-                            this.listarLibro();
+                            $("#modal-proyecto").modal('hide');
+                            this.listarProyecto();
                         })
                         .catch((error) => {
                             console.log(error);
@@ -437,7 +324,7 @@ import Multiselect from "vue-multiselect";
             eliminar(row, index){
                  this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
                   //
-                  axios.put("api/libro/eliminar/"+row.id)
+                  axios.put("api/proyecto/eliminar/"+row.id)
                 .then((response) => {
                     this.$toastr.s(response.data.message);
                     row.activo = false;
@@ -445,12 +332,12 @@ import Multiselect from "vue-multiselect";
                 .catch((error) => {
                     this.$toastr.e(error.response.data.message);
                 });
-                this.listarLibro();
+                this.listarProyecto();
                 });
                 
             },
             activar(row, index){
-                axios.put("api/libro/activar/"+row.id)
+                axios.put("api/proyecto/activar/"+row.id)
                 .then((response) => {
                     this.$toastr.s(response.data.message);
                     row.activo = true;
@@ -461,13 +348,13 @@ import Multiselect from "vue-multiselect";
             },
            
             exportar(){
-                let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarLibros.filtrosBusqueda);
+                let url = process.env.MIX_APP_URL + '/exportar/ocupaciones' + Helper.getFilterURL(this.listarProyectos.filtrosBusqueda);
                 window.open(url);
             },
             
             cambiarTipo(){
-                this.modal.libro.subido = !this.modal.libro.subido;
-                this.modal.libro.url = ''
+                this.modal.proyecto.subido = !this.modal.proyecto.subido;
+                this.modal.proyecto.url = ''
             },
 
             cambiarDocumento(){
@@ -487,5 +374,3 @@ import Multiselect from "vue-multiselect";
 }
 
 </style>
-
-  
