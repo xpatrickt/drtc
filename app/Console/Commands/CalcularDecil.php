@@ -21,7 +21,7 @@ class CalcularDecil extends Command
      *
      * @var string
      */
-    protected $description = 'Calcula los deciles del sistema de los susuarios';
+    protected $description = 'Calcula los deciles del sistema de los usuarios';
 
     /**
      * Create a new command instance.

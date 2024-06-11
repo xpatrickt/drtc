@@ -158,7 +158,7 @@ Route::middleware('auth:api')->group(function () {
       Route::get('listar', [ProyectoController::class, 'listar']);
       Route::post('crear', [ProyectoController::class, 'crear']);
       Route::put('modificar/{id}', [ProyectoController::class, 'modificar']);
-      Route::put('inactivar/{id}', [ProyectoController::class, 'inactivar']);
+      Route::put('eliminar/{id}', [ProyectoController::class, 'eliminar']);
       Route::put('activar/{id}', [ProyectoController::class, 'activar']);
   
     });
@@ -170,7 +170,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('listar', [TareaController::class, 'listar']);
     Route::post('crear', [TareaController::class, 'crear']);
     Route::put('modificar/{id}', [TareaController::class, 'modificar']);
-    Route::put('inactivar/{id}', [TareaController::class, 'inactivar']);
+    Route::put('eliminar/{id}', [ProyectoController::class, 'eliminar']);
     Route::put('activar/{id}', [TareaController::class, 'activar']);
 
   });

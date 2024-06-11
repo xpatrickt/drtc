@@ -34,9 +34,9 @@ class ProyectoController extends Controller
         return response()->json(['message' => 'El proyecto se actualizó correctamente']);
     }
 
-    public function inactivar($id){
+    public function eliminar($id){
         $inactivado = Proyecto::findOrFail($id);
-        $inactivado->activo = false;
+        $inactivado->estado = false;
         $inactivado->save(); 
         return response()->json(['message' => 'Se inactivó correctamente']);
 
@@ -44,7 +44,7 @@ class ProyectoController extends Controller
 
     public function activar($id){
         $activado = Proyecto::findOrFail($id);
-        $activado->activo = true;
+        $activado->estado = true;
         $activado->save(); 
         return response()->json(['message' => 'Se activó correctamente']);
 

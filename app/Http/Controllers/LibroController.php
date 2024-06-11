@@ -64,6 +64,7 @@ class LibroController extends Controller
     public function modificar(Request $request, $id){
         $editado = Libro::findOrFail($id);        
         $editado->update($request->all()); 
+        
         return response()->json(['message' => 'El libro se actualizó correctamente']);
     }
 

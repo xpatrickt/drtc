@@ -21,7 +21,7 @@ class CreateProyectoTable extends Migration
             $table->string('descripcion', 600)->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
-            $table->integer('estado')->nullable();
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <template>
     <div class="p-3 pt-5">
-         <div class="col-md-12" style="margin-left: -15px;"><button class="btn btn-outline-secondary float-right"  type="button" @click="nuevo"> Nuevo </button>
+         <div class="col-md-12" style="margin-left: -15px;">
+        <button class="btn btn-outline-secondary float-right"  type="button" @click="nuevo"> Nuevo </button>
         <h4 class="text-color-2 mb-3">Mantenimiento de Proyectos</h4></div>
         <br>
         <div class="table-responsive">
@@ -54,7 +55,7 @@
                                     data-vv-as="Nombre"
                                     placeholder="Nombre"
                                     name="nombre"
-                                    v-validate="'required|max:500'">
+                                    v-validate="'required|max:250'">
                                     <span class="text-danger">{{errors.first("form_registro.nombre")}}</span>
                                 </div>
 
@@ -68,47 +69,50 @@
                                     data-vv-as="Descripcion"
                                     placeholder="Descripcion"
                                     name="descripcion"
-                                    v-validate="'required|max:5000'">
+                                    v-validate="'required|max:600'">
                                     <span class="text-danger">{{errors.first("form_registro.descripcion")}}</span>
                                 </div>
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                  <li class="nav-item" role="presentation" @click="cambiarTipo()">
-                                    <button class="nav-link active" id="link-tab" data-toggle="tab" data-target="#link" type="button" role="tab" aria-controls="link" aria-selected="true">Copiar Link PDF</button>
-                                  </li>
-                                  <li class="nav-item" role="presentation" @click="cambiarTipo()">
-                                    <button class="nav-link" id="upload-tab" data-toggle="tab" data-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Subir archivo PDF</button>
-                                  </li>
-                                </ul>
-                                <div class="tab-content" id="myTabContent">
-                                  <div class="tab-pane fade show active" id="link" role="tabpanel" aria-labelledby="link-tab">
-                                    <div class="form-group" v-if="!modal.proyecto.subido">
-                                        <p class="m-0">
-                                            <strong>URL</strong>
-                                        </p>
-                                        <input type="text"
-                                        v-model="modal.proyecto.url"
-                                        class="form-control"
-                                        data-vv-as="URL"
-                                        placeholder="URL"
-                                        name="url"
-                                        v-validate="'required|max:500'">
-                                        <span class="text-danger">{{errors.first("form_registro.url")}}</span>
-                                    </div>
-                                  </div>
-                                  <div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="upload-tab">
-                                    <div class="form-group" v-if="modal.proyecto.subido">
-                                        <p class="m-0">
-                                            <strong>Ubicación</strong>
-                                        </p>
 
-                                        <div class="form-group row">
-                                            <div class="col-md-12">                                        
-                                                <input type="file" name="url" data-vv-as="URL" id="url" class="form-control" accept="application/pdf" v-validate="'required|max:500'"> 
-                                            </div>
-                                        </div>
-                                        <span class="text-danger">{{errors.first("form_registro.url")}}</span>
-                                    </div>
-                                  </div>
+                                <div class="form-group col-md-6">
+                                <p class="m-0">
+                                    <strong>Inicio</strong>
+                                </p>
+                                <input type="date"
+                                v-model="modal.proyecto.fecha_inicio"
+                                class="form-control"
+                                data-vv-as="Inicio"
+                                placeholder="Inicio"
+                                name="fecha_inicio">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.fecha_inicio")
+                                }}</span>
+                                </div>                            
+                                <div class="form-group col-md-6">
+                                <p class="m-0">
+                                    <strong>Fin</strong>
+                                </p>
+                                <input type="date"
+                                v-model="modal.proyecto.fecha_fin"
+                                class="form-control"
+                                data-vv-as="Fin"
+                                placeholder="Fin"
+                                name="fecha_fin">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.fecha_fin")
+                                }}</span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                <input type="hidden"
+                                v-model="modal.proyecto.estado"
+                                class="form-control"
+                                data-vv-as="Estado"
+                                placeholder="Estado"
+                                value="1"
+                                name="estado">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.estado")
+                                }}</span>
                                 </div>
 
                             </form>
@@ -157,27 +161,20 @@ import Crypt from "../../services/Crypt";
                     },
                     deshabilitarEdicion: false,
                 },
-                listarGradoCurso:[],
+ 
                 deshabilitado: false,
                 modal:{
                     tipo: '',
                     titulo:  '',
-                    nivelID: null,
-                    id_lib_cur: null,
                     proyecto:{
                         nombre:  '',
-                        autor: '',
                         descripcion:'',
-                        url:'',
-                        subido: false,
-                        id_grado_cur:'',
+                        fecha_inicio: '',
+                        fecha_fin:'',
+                        estado:1,
                     },
 
                 },
-                curso: null,
-                listarNiveles:[],
-                listarGrados: [],
-                listarCursos: [],
                 editarDocumento: false,
                 documento: '',
 
@@ -201,19 +198,16 @@ import Crypt from "../../services/Crypt";
         limpiarFormulario(){
                 this.modal = {
                     titulo:  '',
-                    id_lib_cur: null,
-                    nivelID: null,
                     proyecto:{
                         nombre:  '',
-                        autor: '',
                         descripcion:'',
-                        url:'',
-                        subido: false,
-                        id_grado_cur:'',
+                        estado:'',
+                        fecha_inicio: '',
+                        fecha_fin:'',
+                        estado:1,
                     },
                     deshabilitado: false,   
                 }
-                this.listarCursos = null;
                 this.$validator.reset();
             },
             nuevo(){
@@ -221,49 +215,40 @@ import Crypt from "../../services/Crypt";
                 this.limpiarFormulario();
                 this.modal.titulo = 'Nuevo proyecto';
                 this.modal.tipo = 'nuevo';
-
             },
             ver(row, index){
                 $("#modal-proyecto").modal('show');
                 this.limpiarFormulario();
-                this.listarGrado(row.grado_curso.grado.id_nivel);
-                this.listarCurso(row.grado_curso.id_grado);
                 this.modal = {
                     titulo:  'Ver proyecto',
                     tipo: 'ver',
                     id_proyecto: row.id,
-                    nivelID: row.grado_curso.grado.id_nivel,
+
                     proyecto:{
                         nombre: row.nombre,
-                        autor: row.autor,
                         descripcion: row.descripcion,
-                        url: row.url,
-                        subido: row.subido,
-                        id_grado_cur: row.id_grado_cur,
+                        fecha_inicio: row.fecha_inicio,
+                        fecha_fin: row.fecha_fin,
+                        estado: row.estado,
                     },
-                    grado_curso: row.grado_curso,
+  
                     deshabilitado: true,
                 }
             },
             editar(row, index){
                 $("#modal-proyecto").modal('show');
                 this.limpiarFormulario();
-                this.listarGrado(row.grado_curso.grado.id_nivel)
-                this.listarCurso(row.grado_curso.id_grado);
                 this.modal = {
                     titulo:  'Editar proyecto',
                     tipo: 'editar',
                     id_proyecto: row.id,
-                    nivelID: row.grado_curso.grado.id_nivel,
                     proyecto:{
                         nombre: row.nombre,
-                        autor: row.autor,
                         descripcion: row.descripcion,
-                        url: row.url,
-                        subido: row.subido,
-                        id_grado_cur: row.id_grado_cur,
-                    },
-                    grado_curso: row.grado_curso,
+                        fecha_inicio: row.fecha_inicio,
+                        fecha_fin: row.fecha_fin,
+                        estado: 1,
+                      },
                     deshabilitado: false
                 }
             },
@@ -274,13 +259,12 @@ import Crypt from "../../services/Crypt";
                         if(this.modal.proyecto.subido){
                             let _this = this;
                             let data = new FormData();
-                            data.append('url', document.getElementById('url').files[0]);
                             data.append('nombre', _this.modal.proyecto.nombre);
-                            data.append('autor', _this.modal.proyecto.autor);
                             data.append('descripcion', _this.modal.proyecto.descripcion);
-                            data.append('subido', _this.modal.proyecto.subido);
-                            data.append('id_grado_cur', _this.modal.proyecto.id_grado_cur);
-                            axios.post("api/proyecto/crear", data)
+                            data.append('fecha_inicio', _this.modal.proyecto.fecha_inicio);
+                            data.append('fecha_fin', _this.modal.proyecto.fecha_fin);
+                            data.append('estado', _this.modal.proyecto.estado);
+                                  axios.post("api/proyecto/crear", data)
                             .then((response) => {
                                 this.$toastr.s(response.data.message);
                                 $("#modal-proyecto").modal('hide');
@@ -327,7 +311,7 @@ import Crypt from "../../services/Crypt";
                   axios.put("api/proyecto/eliminar/"+row.id)
                 .then((response) => {
                     this.$toastr.s(response.data.message);
-                    row.activo = false;
+                    row.estado = false;
                 })
                 .catch((error) => {
                     this.$toastr.e(error.response.data.message);
@@ -340,7 +324,7 @@ import Crypt from "../../services/Crypt";
                 axios.put("api/proyecto/activar/"+row.id)
                 .then((response) => {
                     this.$toastr.s(response.data.message);
-                    row.activo = true;
+                    row.estado = true;
                 })
                 .catch((error) => {
                     this.$toastr.e(error.response.data.message);
@@ -352,10 +336,6 @@ import Crypt from "../../services/Crypt";
                 window.open(url);
             },
             
-            cambiarTipo(){
-                this.modal.proyecto.subido = !this.modal.proyecto.subido;
-                this.modal.proyecto.url = ''
-            },
 
             cambiarDocumento(){
 
