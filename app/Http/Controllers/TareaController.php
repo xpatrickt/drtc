@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tarea;
 
-class Tarea extends Controller
+class TareaController extends Controller
 {
     public function ver($id){
         $ver = Tarea::findOrFail($id);
@@ -17,7 +18,11 @@ class Tarea extends Controller
     }
    
     public function listar(){
-        $lista = Tarea::select();
+    /*    $lista = Tarea::select();
+        return $lista->get();*/
+        $lista = Tarea::select()->with([
+            'proyecto:id,nombre',
+            ]);
         return $lista->get();
     }
 
