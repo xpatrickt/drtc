@@ -14,8 +14,14 @@ import Inicio from './components/pages/Inicio';
 //admin
 import MainAdmin from './components/layouts/MainAdmin';
 import MainGestion from './components/layouts/MainGestion';
+import MainSeguimiento from './components/layouts/MainSeguimiento';
+import MainAvance from './components/layouts/MainAvance';
+import MainConfiguracion from './components/layouts/MainConfiguracion';
 import InicioAdmin from './components/admin/Inicio';
 import InicioGestion from './components/admin/Gestion';
+import InicioSeguimiento from './components/admin/Seguimiento';
+import InicioAvance from './components/admin/Avance';
+import InicioConfiguracion from './components/admin/Configuracion';
 import AsistenciaAdmin from './components/admin/Asistencia';
 
 
@@ -103,6 +109,45 @@ let routes = [
             { path: 'subtarea', name: 'SubTarea', component: SubTarea },
         ]
     },
+
+    {
+        path: '/admin',
+        component: MainAvance,
+        meta: { requiresAuthAdmin: true },
+        redirect: '/admin/avance',
+        children: [
+            { path: 'avance', name: 'InicioAvance', component: InicioAvance },
+            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
+            { path: 'tarea', name: 'Tarea', component: Tarea },
+            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
+        ]
+    },
+    {
+        path: '/admin',
+        component: MainSeguimiento,
+        meta: { requiresAuthAdmin: true },
+        redirect: '/admin/seguimiento',
+        children: [
+            { path: 'seguimiento', name: 'InicioSeguimiento', component: InicioSeguimiento },
+            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
+            { path: 'tarea', name: 'Tarea', component: Tarea },
+            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
+        ]
+    },
+    {
+        path: '/admin',
+        component: MainConfiguracion,
+        meta: { requiresAuthAdmin: true },
+        redirect: '/admin/configuracion',
+        children: [
+            { path: 'configuracion', name: 'InicioConfiguracion', component: InicioConfiguracion },
+            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
+            { path: 'tarea', name: 'Tarea', component: Tarea },
+            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
+        ]
+    },
+
+    
 ];
 
 const router = new Router({

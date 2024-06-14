@@ -1,15 +1,8 @@
 <template>
     <div class="p-3 pt-5">
       <div class="col-md-12" style="margin-left: -15px">
-        <button
-          class="btn btn-outline-secondary float-right"
-          type="button"
-          @click="nuevo"
-        >
-          Nuevo
-        </button>
-        <h4 class="text-color-2 mb-3">Mantenimiento de Actividades</h4>
-      </div>
+        <button class="btn btn-outline-secondary float-right" type="button" @click="nuevo"> Nuevo </button>
+        <h4 class="text-color-2 mb-3">Mantenimiento de Actividades</h4></div>
       <br />
   
       <div class="table-responsive">

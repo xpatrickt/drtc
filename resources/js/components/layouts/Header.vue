@@ -19,7 +19,7 @@
                         <input
                         type="text"
                         class="buscador-input "
-                        placeholder="Escribe tu pregunta o post"
+                        placeholder="buscar"
                         v-model="redactar.texto"
                         @keyup="keyUpBuscarSugerencias"
                         @change="ocultarSugerencias"

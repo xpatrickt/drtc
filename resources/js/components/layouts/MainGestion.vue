@@ -102,8 +102,8 @@ export default {
                     mostrar: false,
                     titulo: 'Ayuda',
                     contenido: [
-                        {titulo: 'Recuerda ir al grano con la solución', imagen:'ayuda_inicio.png', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis augue ac porttitor interdum. Aenean cursus eros imperdiet ante aliquet imperdiet.', activo:'active',},
-                        {titulo: 'Recuerda ir al grano con la solución v2', imagen:'ayuda_inicio.png', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis augue ac porttitor interdum.', activo:'false',},
+                        {titulo: '.', imagen:'ayuda_inicio.png', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis augue ac porttitor interdum. Aenean cursus eros imperdiet ante aliquet imperdiet.', activo:'active',},
+                        {titulo: '.', imagen:'ayuda_inicio.png', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis augue ac porttitor interdum.', activo:'false',},
                     ]
                 }
         }

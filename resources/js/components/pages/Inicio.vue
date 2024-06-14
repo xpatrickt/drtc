@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioDocente')" v-if="tipo == 1 || tipo == 2">
+    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioAvance')" v-if="tipo == 1 || tipo == 2">
       <div class="card-content">
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioCampus')">
+    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioSeguimiento')">
       <div class="card-content">
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioAdmin')" v-if="tipo == 1">
+    <div class="col-12 col-sm-6 pb-5" @click.prevent="redireccionar('InicioConfiguracion')" v-if="tipo == 1">
       <div class="card-content">
         <div class="card-body pb-0 pt-0 color-white">
           <div class="row justify-content-center">
