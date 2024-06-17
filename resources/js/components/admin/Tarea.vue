@@ -85,44 +85,110 @@
                 <form class="form" data-vv-scope="form_registro">
                   <div class="form-group">
                     <p class="m-0">
-                      <strong>Nivel</strong>
+                      <strong>Proyecto</strong>
                     </p>
                     <select
-                      name="nivel"
+                      name="proyecto"
                       class="form-control"
-                      v-model="modal.grado.id_nivel"
-                      data-vv-as="Nivel"
-                      placeholder="Seleccione Nivel"
+                      v-model="modal.tarea.id_proyecto"
+                      data-vv-as="Proyecto"
+                      placeholder="Seleccione Proyecto"
                       v-validate="'required'"
                     >
                       <option
-                        v-for="row in listarNiveles"
+                        v-for="row in listarProyectos"
                         :key="row.id"
                         :value="row.id"
                         v-text="row.nombre"
                       ></option>
                     </select>
                     <span class="text-danger">{{
-                      errors.first("form_registro.nivel")
+                      errors.first("form_registro.proyecto")
+                    }}</span>
+                  </div>
+
+                  <div class="form-group">
+                    <p class="m-0">
+                      <strong>Actividad</strong>
+                    </p>
+                    <input
+                      type="text"
+                      v-model="modal.tarea.nombre"
+                      class="form-control"
+                      data-vv-as="Tarea"
+                      placeholder="Actividad"
+                      name="tarea"
+                      v-validate="'required|max:250'"
+                    />
+                    <span class="text-danger">{{
+                      errors.first("form_registro.tarea")
                     }}</span>
                   </div>
                   <div class="form-group">
                     <p class="m-0">
-                      <strong>Grado</strong>
+                      <strong>Descripcion</strong>
                     </p>
-                    <input
+                    <textarea 
                       type="text"
-                      v-model="modal.grado.grado"
+                      v-model="modal.tarea.descripcion"
                       class="form-control"
-                      data-vv-as="Grado"
-                      placeholder="Grado"
-                      name="grado"
-                      v-validate="'required|max:30'"
-                    />
+                      data-vv-as="Descripcion"
+                      placeholder="Descripcion"
+                      name="descripcion"
+                      v-validate="'max:600'"></textarea>
+                   
                     <span class="text-danger">{{
-                      errors.first("form_registro.grado")
+                      errors.first("form_registro.descripcion")
                     }}</span>
                   </div>
+                  <div class="form-group">
+                                <p class="m-0">
+                                    <strong>Inicio</strong>
+                                </p>
+                                <input type="date"
+                                v-model="modal.tarea.fecha_inicio"
+                                class="form-control"
+                                data-vv-as="Inicio"
+                                placeholder="Inicio"
+                                name="fecha_inicio">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.fecha_inicio")
+                               }}</span>
+                  </div>  
+                  <div class="form-group">
+                                <p class="m-0">
+                                    <strong>Fin</strong>
+                                </p>
+                                <input type="date"
+                                v-model="modal.tarea.fecha_fin"
+                                class="form-control"
+                                data-vv-as="Inicio"
+                                placeholder="Inicio"
+                                name="fecha_fin">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.fecha_fin")
+                               }}</span>
+                  </div>  
+
+                  <div class="form-group">
+                    <p class="m-0">
+                      <strong>Estado</strong>
+                    </p>
+                    <select v-model="val" name="estado" class="form-control"
+                    placeholder="Seleccione Estado"
+                    v-validate="'required'">
+                 <option v-for="row in estados" 
+                 :key="row.estado" 
+                 :value="row.estado" 
+                 v-text="row.estado"></option>
+                </select>
+                    <span class="text-danger">{{
+                      errors.first("form_registro.estado")
+                    }}</span>
+                  </div>
+
+
+
                 </form>
               </div>
               <div class="modal-footer">
@@ -154,176 +220,6 @@
         </div>
       </template>
 
-
-      <!-- Modal agregar Cursos -->
-
-     <!-- <template>
-        <div
-          class="modal fade"
-          id="modal-agregarCurso"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5
-                  class="modal-title"
-                  id="exampleModalLongTitle"
-                  v-text="modal.titulo"
-                ></h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form class="form" data-vv-scope="form_registro_grado_curso">
-                  <div class="row">
-                    <div class="form-group col-6">
-                      <p class="m-0">
-                        <strong>Nivel</strong>
-                      </p>
-                      <select
-                        name="id_nivel"
-                        disabled
-                        class="form-control"
-                        v-model="modalAgregar.grado.id_nivel"
-                        data-vv-as="id_nivel"
-                        placeholder="Seleccione Nivel"
-                        v-validate="'required'"
-                      >
-                        <option
-                          v-for="row in listarNiveles"
-                          :key="row.id"
-                          :value="row.id"
-                          v-text="row.nombre"
-                        ></option>
-                      </select>
-                    </div>
-                    <div class="form-group col-6">
-                      <p class="m-0">
-                        <strong>Grado</strong>
-                      </p>
-                      <input
-                        type="text"
-                        v-model="modalAgregar.grado.grado"
-                        disabled
-                        class="form-control"
-                        data-vv-as="Nombre"
-                        placeholder="Nombre"
-                        name="grado"
-                        :id="modalAgregar.grado.id"
-                        v-validate="'required'"
-                      />
-                    </div>
-                    <div class="form-group col-10">
-                      <p class="m-0">
-                        <strong>Cursos</strong>
-                      </p>
-                      <select
-                        name="Curso"
-                        class="form-control"
-                        v-model="modalAgregar.grado.id_curso"
-                        data-vv-as="Curso"
-                        placeholder="Seleccione Curso"
-                        v-validate="'required'"
-                      >
-                        <option
-                          v-for="row in listarCursos"
-                          :key="row.id"
-                          :value="row.id"
-                          v-text="row.nombre"
-                        ></option>
-                      </select>
-                      <span class="text-danger">{{
-                        errors.first("form_registro_grado_curso.nivel")
-                      }}</span>
-                    </div>
-                    <div class="form-group col-2">
-                      <p class="m-0 col-12">
-                        <strong> &nbsp;</strong>
-                      </p>
-                      <button
-                        type="button"
-                        class="btn btn-success"
-                        @click="guardarAgregarCurso"
-                      >
-                        Agregar
-                      </button>
-                    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <vue-good-table
-                      :columns="listarGradoCursos.columns"
-                      :rows="listarGradoCursos.data"
-                      :search-options="{
-                        enabled: true,
-                        placeholder: 'Buscar en la tabla',
-                      }"
-                      :pagination-options="{
-                        enabled: true,
-                        mode: 'pages',
-                        nextLabel: 'Sig',
-                        prevLabel: 'Ant',
-                        rowsPerPageLabel: 'Registros por página',
-                        ofLabel: 'de',
-                        pageLabel: 'Página', // for 'pages' mode
-                        allLabel: 'Todo',
-                      }"
-                    >
-                      <template slot="table-row" slot-scope="props">
-                        <span v-if="props.column.field == 'options'">
-  
-                          <button
-                            class="btn btn-outline-danger btn-sm btn-icon"
-                            @click.prevent="eliminarGradoCurso(props.row, props.index)"
-                            data-toggle="tooltip"
-                            title="Eliminar"
-                          >
-                            <i class="fas fa-trash-alt"></i>
-                          </button>
-                        </span>
-                      </template>
-                    </vue-good-table>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
-                  data-dismiss="modal"
-                >
-                  Cerrar
-                </button>
-                <button
-                  type="button"
-                  v-if="modal.tipo == 'nuevo'"
-                  class="btn btn-primary"
-                  @click="guardar"
-                >
-                  Guardar
-                </button>
-                <button
-                  type="button"
-                  v-else-if="modal.tipo == 'editar'"
-                  class="btn btn-primary"
-                  @click="modificar"
-                >
-                  Actualizar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>-->
     </div>
   </template>
   
@@ -337,6 +233,7 @@
     },
     data() {
       return {
+        val:null,
         listarTareas: {
           data: [],
           columns: [
@@ -361,18 +258,28 @@
           deshabilitarEdicion: false,
         },
         listarProyectos: [],
-        listarCursos: [],
         deshabilitado: false,
         modal: {
           tipo: '',
           titulo: '',
           nivelID: null,
-          grado: {
-            grado: '',
-            id_nivel: '',
+          tarea: {
+            nombre: '',
+            descripcion: '',
+            id_proyecto: '',
+            fecha_inicio: '',
+            fecha_fin: '',
+            estado: '',
+            prioridad:'',
+            meta:'',
+            avance:'',
           },
         },
-
+        estados: [
+        { estado: "pendiente" },
+        { estado: "proceso" },
+        { estado: "finalizado" },
+      ]
       };
     },
     created() {
@@ -417,8 +324,16 @@
         this.modal = {
           titulo: '',
           nivelID: null,
-          grado: {
-            grado: '',
+          tarea: {
+            nombre: '',
+            descripcion: '',
+            id_proyecto: '',
+            fecha_inicio: '',
+            fecha_fin: '',
+            estado: '',
+            prioridad:'',
+            meta:'',
+            avance:'',
           },
           deshabilitado: false,
         };
@@ -427,17 +342,24 @@
       nuevo() {
         $("#modal-tarea").modal("show");
         this.limpiarFormulario();
-        this.modal.titulo = "Nueva Tarea";
+        this.modal.titulo = "Nueva Actividad";
         this.modal.tipo = "nuevo";
       },
       ver(row, index) {
         $("#modal-tarea").modal("show");
         this.limpiarFormulario();
         this.modal = {
-          titulo: "Ver Tarea",
+          titulo: "Ver Actividad",
           tipo: "ver",
           tarea: {
             nombre: row.nombre,
+            descripcion: row.descripcion,
+            fecha_inicio: row.fecha_inicio,
+            fecha_fin: row.fecha_fin,
+            estado: row.estado,
+            prioridad: row.prioridad,
+            meta: row.meta,
+            avance: row.avance,
             id_proyecto: row.id_proyecto,
           },
           deshabilitado: true,
@@ -448,12 +370,13 @@
         $("#modal-tarea").modal("show");
         this.limpiarFormulario();
         this.modal = {
-          titulo: "Editar Tarea",
+          titulo: "Editar Actividad",
           tipo: "editar",
           nivelID: row.id,
-          grado: {
-            grado: row.grado,
-            id_nivel: row.id_nivel,
+          tarea: {
+            nombre: row.nombre,
+            descripcion: row.descripcion,
+            id_proyecto: row.id_proyecto,
           },
           deshabilitado: false,
         };

@@ -62,12 +62,12 @@
                                     </li>
                                     <li class="mb-1" v-if="validarPermisos(1)">
                                         <a class="nav-link" href="#"  @click.prevent="redireccionar('Tarea')">
-                                            <i class="fas fa-tag me-3"></i>Tareas
+                                            <i class="fas fa-tag me-3"></i>Actividades
                                         </a>
                                     </li>
                                     <li class="mb-1" v-if="validarPermisos(1)">
                                         <a class="nav-link" href="#"  @click.prevent="redireccionar('SubTarea')">
-                                            <i class="fas fa-tag me-3"></i>SubTareas
+                                            <i class="fas fa-tag me-3"></i>Tareas
                                         </a>
                                     </li>
                                 </ul>

@@ -18,8 +18,7 @@ class TareaController extends Controller
     }
    
     public function listar(){
-    /*    $lista = Tarea::select();
-        return $lista->get();*/
+
         $lista = Tarea::select()->with([
             'proyecto:id,nombre',
             ]);

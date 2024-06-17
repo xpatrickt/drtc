@@ -1,23 +1,10 @@
 <template>
     <div class="p-3 pt-5">
-        <h4 class="text-color-2 mb-3">GESTIÓN DE PROYECTOS</h4>
+        <h4 class="text-color-2 mb-3">SEGUIMIENTO DE PROYECTOS</h4>
         <hr>
         <div class="row justify-content-md-center">
             <img :src="$baseUrlVue('img/auth/gestion.png')" alt="" class="mt-3 opacity-10"/>
-           <!-- <div class="col-md-4">
-                <div class="form-group text-center">
-                    <label for="">Usuarios</label>
-                    <br>
-                    <h1 style="font-weight: 900; font-size: 50px;" v-text="cantidadUsuarios"></h1>
-                </div>
-            </div>  
-            <div class="col-md-4">
-                <div class="form-group text-center">
-                    <label for="">Contenido</label>
-                    <br>
-                    <h1 style="font-weight: 900; font-size: 50px;" v-text="cantidadContenidos"></h1>
-                </div>
-            </div> -->
+
         </div>
         <!-- <hr> -->
         <!-- <div class="row justify-content-md-center">

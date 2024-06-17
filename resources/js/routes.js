@@ -82,8 +82,7 @@ let routes = [
         meta: { requiresAuthAdmin: true },
         redirect: '/admin/inicio',
         children: [
-            { path: 'inicio', name: 'InicioAdmin', component: InicioAdmin },
-            { path: 'asistencia', name: 'AsistenciaAdmin', component: AsistenciaAdmin },            
+              { path: 'asistencia', name: 'AsistenciaAdmin', component: AsistenciaAdmin },            
             { path: 'recepciocv', name: 'RecepcionCV', component: RecepcionCV },
             { path: 'grado', name: 'Grado', component: Grado },
             // { path: 'seccion', name: 'Seccion', component: Seccion },
