@@ -278,6 +278,7 @@
         estados: [
         { estado: "pendiente" },
         { estado: "proceso" },
+        
         { estado: "finalizado" },
       ]
       };
@@ -480,5 +481,4 @@
   };
   </script>
   <style >
-  </style>
-  
+  </style>  
