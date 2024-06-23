@@ -14,6 +14,7 @@ class Tarea extends Model
         'descripcion',
         'fecha_inicio',
         'fecha_fin',
+        'situacion',
         'estado',
         'prioridad',
         'meta',

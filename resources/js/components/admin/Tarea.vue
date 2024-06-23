@@ -172,22 +172,85 @@
 
                   <div class="form-group">
                     <p class="m-0">
-                      <strong>Estado</strong>
+                      <strong>Situación</strong>
                     </p>
-                    <select v-model="val" name="estado" class="form-control"
-                    placeholder="Seleccione Estado"
+                    <select v-model="modal.tarea.situacion" name="situacion" class="form-control"
+                    placeholder="Seleccione Situación"
                     v-validate="'required'">
-                 <option v-for="row in estados" 
-                 :key="row.estado" 
-                 :value="row.estado" 
-                 v-text="row.estado"></option>
+                 <option v-for="row in situaciones" 
+                 :key="row.situacion" 
+                 :value="row.situacion" 
+                 v-text="row.situacion"></option>
                 </select>
                     <span class="text-danger">{{
-                      errors.first("form_registro.estado")
+                      errors.first("form_registro.situacion")
                     }}</span>
                   </div>
-
-
+                  <div class="form-group">
+                    <p class="m-0">
+                      <strong>Prioridad</strong>
+                    </p>
+                    <input
+                      type="number"
+                      max="10"
+                      min="1"
+                      v-model="modal.tarea.prioridad"
+                      class="form-control"
+                      data-vv-as="Prioridad"
+                      placeholder="Prioridad"
+                      name="prioridad"
+                      v-validate="'required|max:250'"
+                    />
+                    <span class="text-danger">{{
+                      errors.first("form_registro.prioridad")
+                    }}</span>
+                  </div>
+                  <div class="form-group">
+                    <p class="m-0">
+                      <strong>Meta</strong>
+                    </p>
+                    <input
+                      type="text"
+                      v-model="modal.tarea.meta"
+                      class="form-control"
+                      data-vv-as="Meta"
+                      placeholder="Meta"
+                      name="meta"
+                      v-validate="'required|max:250'"
+                    />
+                    <span class="text-danger">{{
+                      errors.first("form_registro.meta")
+                    }}</span>
+                  </div>
+                  <div class="form-group">
+                    <p class="m-0">
+                      <strong>Avance</strong>
+                    </p>
+                    <input
+                      type="text"
+                      v-model="modal.tarea.avance"
+                      class="form-control"
+                      data-vv-as="Avance"
+                      placeholder="Avance"
+                      name="avance"
+                      v-validate="'required|max:250'"
+                    />
+                    <span class="text-danger">{{
+                      errors.first("form_registro.avance")
+                    }}</span>
+                  </div>
+                  <div class="form-group col-md-6">
+                                <input type="hidden"
+                                v-model="modal.tarea.estado"
+                                class="form-control"
+                                data-vv-as="Estado"
+                                placeholder="Estado"
+                                value="1"
+                                name="estado">
+                                <span class="text-danger">{{
+                                    errors.first("form_registro.estado")
+                                }}</span>
+                                </div>
 
                 </form>
               </div>
@@ -242,7 +305,7 @@
             { label: "Descripcion", field: "descripcion" },
             { label: "Inicio", field: "fecha_inicio" },
             { label: "Fin", field: "fecha_fin" },
-            { label: "Estado", field: "estado" },
+            { label: "Situación", field: "situacion" },
             { label: "Prioridad", field: "prioridad" },
             { label: "Meta", field: "meta" },
             { label: "Avance", field: "avance" },
@@ -269,17 +332,17 @@
             id_proyecto: '',
             fecha_inicio: '',
             fecha_fin: '',
-            estado: '',
+            situacion: '',
             prioridad:'',
             meta:'',
+            estado:1,
             avance:'',
           },
         },
-        estados: [
-        { estado: "pendiente" },
-        { estado: "proceso" },
-        
-        { estado: "finalizado" },
+        situaciones: [
+        { situacion: "pendiente" },
+        { situacion: "proceso" },
+        { situacion: "finalizado" },
       ]
       };
     },
@@ -331,10 +394,11 @@
             id_proyecto: '',
             fecha_inicio: '',
             fecha_fin: '',
-            estado: '',
+            situacion: '',
             prioridad:'',
             meta:'',
             avance:'',
+            estado:1,
           },
           deshabilitado: false,
         };
@@ -357,6 +421,7 @@
             descripcion: row.descripcion,
             fecha_inicio: row.fecha_inicio,
             fecha_fin: row.fecha_fin,
+            situacion: row.situacion,
             estado: row.estado,
             prioridad: row.prioridad,
             meta: row.meta,
@@ -377,6 +442,13 @@
           tarea: {
             nombre: row.nombre,
             descripcion: row.descripcion,
+            fecha_inicio: row.fecha_inicio,
+            fecha_fin: row.fecha_fin,
+            situacion: row.situacion,
+            prioridad: row.prioridad,
+            meta: row.meta,
+            avance: row.avance,
+            estado: 1,
             id_proyecto: row.id_proyecto,
           },
           deshabilitado: false,
@@ -386,11 +458,11 @@
         this.$validator.validateAll("form_registro").then((result) => {
           if (result) {
             axios
-              .post("api/grado/crear", this.modal.grado)
+              .post("api/tarea/crear", this.modal.tarea)
               .then((response) => {
                 this.$toastr.s(response.data.message);
                 $("#modal-tarea").modal("hide");
-                this.listarGrado();
+                this.listarTarea();
               })
               .catch((error) => {
                 console.log(error);
@@ -401,14 +473,15 @@
       },
 
       modificar() {
+        console.log(this.modal.tarea);
         this.$validator.validateAll("form_registro").then((result) => {
           if (result) {
             axios
-              .put("api/grado/modificar/" + this.modal.nivelID, this.modal.grado)
+              .put("api/tarea/modificar/" + this.modal.nivelID, this.modal.tarea)
               .then((response) => {
                 this.$toastr.s(response.data.message);
                 $("#modal-tarea").modal("hide");
-                this.listarGrado();
+                this.listarTarea();
               })
               .catch((error) => {
                 console.log(error);
@@ -421,41 +494,25 @@
          this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
                     //
                      axios
-          .put("api/grado/eliminar/" + row.id)
+          .put("api/tarea/eliminar/" + row.id)
           .then((response) => {
             this.$toastr.s(response.data.message);
-            row.activo = false;
+            row.estado = false;
           })
           .catch((error) => {
             this.$toastr.e(error.response.data.message);
           });
-        this.listarGrado();
+        this.listarTarea();
                   });
        
       },
-       eliminarGradoCurso(row, index) {
-          this.$confirm("¿Esta seguro de eliminar el registro?").then(() => {
-                    //
-                    axios
-          .put("api/grado_curso/eliminar/" + row.id)
-          .then((response) => {
-            this.$toastr.s(response.data.message);
-            row.activo = false;
-            this.listarGradoCurso(row.id_grado);
-          })
-          .catch((error) => {
-            this.$toastr.e(error.response.data.message);
-          });
-        this.listarGrado();
-                  });
-        
-      },
+
       activar(row, index) {
         axios
-          .put("api/grado/activar/" + row.id)
+          .put("api/tarea/activar/" + row.id)
           .then((response) => {
             this.$toastr.s(response.data.message);
-            row.activo = true;
+            row.estado = true;
           })
           .catch((error) => {
             this.$toastr.e(error.response.data.message);
