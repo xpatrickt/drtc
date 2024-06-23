@@ -19,7 +19,8 @@ class CreateSubtareaTable extends Migration
             $table->string('descripcion', 600)->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
-            $table->integer('estado')->nullable();
+            $table->integer('situacion',10)->nullable();
+            $table->boolean('estado')->default(true);
             $table->integer('prioridad')->nullable();
             $table->double('meta')->nullable();        
             $table->double('avance')->nullable();

@@ -13,13 +13,14 @@ class TareaController extends Controller
     }
     
     public function llenarCombo(){
-        $select = Tarea::select('id', 'nombre')->get();
+        $select = Tarea::select('id', 'nombre')->where('estado', true)->get();
         return $select;
     }
    
     public function listar(){
 
-        $lista = Tarea::select()->with([
+        $lista = Tarea::select()->where
+        ->with([
             'proyecto:id,nombre',
             ]);
         return $lista->get();

@@ -20,7 +20,8 @@ class CreateTareaTable extends Migration
             $table->string('descripcion', 600)->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
-            $table->string('estado',10)->nullable();
+            $table->string('situacion',10)->nullable();
+            $table->boolean('estado')->default(true);
             $table->integer('prioridad')->nullable();
             $table->double('meta')->nullable();        
             $table->double('avance')->nullable();
