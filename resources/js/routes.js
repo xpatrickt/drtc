@@ -38,7 +38,9 @@ import CriteriosCapacitacion from './components/admin/CriteriosCapacitacion';
 
 import Proyecto from './components/admin/Proyecto';
 import Tarea from './components/admin/Tarea';
-import SubTarea from './components/admin/Subtarea';
+import SubTarea from './components/admin/SubTarea';
+import AvanceActividad from './components/admin/AvanceActividad';
+import AvanceTarea from './components/admin/AvanceTarea';
 Vue.use(Router)
 
 let routes = [
@@ -116,9 +118,9 @@ let routes = [
         redirect: '/admin/avance',
         children: [
             { path: 'avance', name: 'InicioAvance', component: InicioAvance },
-            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
-            { path: 'tarea', name: 'Tarea', component: Tarea },
-            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
+            { path: 'avanceactividad', name: 'AvanceActividad', component: AvanceActividad },
+            { path: 'avancetarea', name: 'AvanceTarea', component: AvanceTarea },
+
         ]
     },
     {

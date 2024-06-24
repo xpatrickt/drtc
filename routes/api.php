@@ -166,11 +166,11 @@ Route::middleware('auth:api')->group(function () {
       //Grupo Tarea
   Route::group(['prefix' => 'tarea'], function () {
     Route::get('ver/{id}', [TareaController::class, 'ver']);
-    Route::get('llenar_combo', [TareaController::class, 'llenarCombo']);
+    Route::get('llenar_combo/{id}', [TareaController::class, 'llenarCombo']);
     Route::get('listar', [TareaController::class, 'listar']);
     Route::post('crear', [TareaController::class, 'crear']);
     Route::put('modificar/{id}', [TareaController::class, 'modificar']);
-    Route::put('eliminar/{id}', [ProyectoController::class, 'eliminar']);
+    Route::put('eliminar/{id}', [TareaController::class, 'eliminar']);
     Route::put('activar/{id}', [TareaController::class, 'activar']);
 
   });
