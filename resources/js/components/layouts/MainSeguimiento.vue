@@ -49,27 +49,23 @@
 
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <ul class="list-unstyled ps-0" style="font-size:20px;">
-                                    <!-- <li class="mb-1" >
-                                        <a class="nav-link" href="#" @click.prevent="redireccionar('InicioAdmin')">
+                                     <li class="mb-1" >
+                                        <a class="nav-link" href="#" @click.prevent="redireccionar('Inicio')">
                                             <i class="fa fa-home  me-3"></i>Inicio
                                         </a>
-                                    </li> -->
+                                    </li> 
                                     
                                     <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Proyecto')">
-                                            <i class="fas fa-tag me-3"></i>Seguimiento de Proyectos
-                                        </a>
-                                    </li>
-                                    <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('Tarea')">
+                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('SeguimientoActividad')">
                                             <i class="fas fa-tag me-3"></i>Seguimiento de Actividades
                                         </a>
                                     </li>
                                     <li class="mb-1" v-if="validarPermisos(1)">
-                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('SubTarea')">
+                                        <a class="nav-link" href="#"  @click.prevent="redireccionar('SeguimientoTarea')">
                                             <i class="fas fa-tag me-3"></i>Seguimiento de Tareas
                                         </a>
                                     </li>
+
                                 </ul>
                             </div>
                         </div>

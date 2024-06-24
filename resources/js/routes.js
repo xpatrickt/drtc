@@ -41,6 +41,9 @@ import Tarea from './components/admin/Tarea';
 import SubTarea from './components/admin/SubTarea';
 import AvanceActividad from './components/admin/AvanceActividad';
 import AvanceTarea from './components/admin/AvanceTarea';
+import SeguimientoTarea from './components/admin/SeguimientoTarea'
+import SeguimientoActividad from './components/admin/SeguimientoActividad'
+
 Vue.use(Router)
 
 let routes = [
@@ -130,9 +133,8 @@ let routes = [
         redirect: '/admin/seguimiento',
         children: [
             { path: 'seguimiento', name: 'InicioSeguimiento', component: InicioSeguimiento },
-            { path: 'proyecto', name: 'Proyecto', component: Proyecto },
-            { path: 'tarea', name: 'Tarea', component: Tarea },
-            { path: 'subtarea', name: 'SubTarea', component: SubTarea },
+            { path: 'seguimientotarea', name: 'SeguimientoTarea', component: SeguimientoTarea },
+            { path: 'seguimientoactividad', name: 'SeguimientoActividad', component: SeguimientoActividad },
         ]
     },
     {

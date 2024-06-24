@@ -25,5 +25,6 @@ php artisan config:cache
 chown -R www-data:www-data storage
 chmod -R 775 storage
 
-npm install
 
+npm install
+npm i vue-chartjs chart.js
