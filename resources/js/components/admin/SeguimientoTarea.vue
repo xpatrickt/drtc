@@ -1,52 +1,69 @@
 <template>
-    <div class="row mt-3">
-        <div class="col-md-6 offset-3">
-            <div class="card border border-dark">
-                <div class="card-header bg-dark">
-                    <div class="card-body">
-                        <Bar :chart-options="chartOptions" :chart-data="charData"></Bar>
-                    </div>
-                </div>
-            </div>
-        </div>
-     </div>   
-  </template>
-  
-  <script>
-  import { Bar } from 'vue-chartjs'
-  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-  
-  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-  
-  export default {
-  name: 'BarChart',
-  components: { Bar },
-  props:{
-    chartId:{
-        type: String,
-        default: 'bar-chart'
-    }
-  },
-  data() {
-    return {
-      etiquetas:[],valores:[],charData:[],
-      chartOptions: {
-        responsive: true
-      }
-    }
-  },
-  async mounted(){
-    const totales=await axios.get('http://laraprododucts.run/api/totales');
-    totales.data.map((row)=>(
-    this.etiquetas.push(row.producto),
-    this.valores.push(row.total)
-    ))
-    this.charData={
-        labels:this.etiquetas,
-        datasets:[
-            {label:'Productos',data:this.valores,backgroundColor:'#f87979'}
-        ]
-    }
-  }
-}
-  </script>
+  <canvas id="canvas" width="800px" height="800px"></canvas>
+ </template>
+ 
+ <script>
+ 
+ export default {
+   name: 'App',
+   methods: {
+     draw: function(ctx) {
+       var myChart = new Chart(ctx, {
+         type: "bar",
+         data: {
+           labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+           datasets: [
+             {
+               label: "# of Votes",
+               data: [12, 19, 3, 5, 2, 3],
+               backgroundColor: [
+                 "rgba(255, 99, 132, 0.2)",
+                 "rgba(54, 162, 235, 0.2)",
+                 "rgba(255, 206, 86, 0.2)",
+                 "rgba(75, 192, 192, 0.2)",
+                 "rgba(153, 102, 255, 0.2)",
+                 "rgba(255, 159, 64, 0.2)"
+               ],
+               borderColor: [
+                 "rgba(255,99,132,1)",
+                 "rgba(54, 162, 235, 1)",
+                 "rgba(255, 206, 86, 1)",
+                 "rgba(75, 192, 192, 1)",
+                 "rgba(153, 102, 255, 1)",
+                 "rgba(255, 159, 64, 1)"
+               ],
+               borderWidth: 1
+             }
+           ]
+         },
+         options: {
+           scales: {
+             yAxes: [
+               {
+                 ticks: {
+                   beginAtZero: true
+                 }
+               }
+             ]
+           }
+         }
+       });
+     }
+   },
+   mounted: function() {
+     var c = document.getElementById("canvas");
+     var ctx = c.getContext("2d");
+     ctx.translate(0.5, 0.5);
+     ctx.imageSmoothingEnabled = false;
+     this.draw(ctx);
+   }
+ }
+   
+ </script>
+ 
+ <style>
+ canvas {
+   background: white;
+   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+ }
+ </style>
