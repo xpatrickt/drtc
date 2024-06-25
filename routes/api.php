@@ -195,6 +195,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('denunciado', [CalificacionPreguntaController::class, 'denunciado']);
   });
 
+  
   //Grupo Bandeja
   Route::group(['prefix' => 'bandeja'], function () {
     Route::post('crear', [BandejaController::class, 'crear']);
