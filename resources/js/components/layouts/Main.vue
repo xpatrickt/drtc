@@ -2,7 +2,7 @@
     <div class="principal">
         <nav class="navbar navbar-expand-lg fixed-top shadow header-personal">
         <!-- <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light shadow" style="border: 3px solid #2FEAF0"> -->
-            <a class="navbar-brand" href="#"  @click.prevent="redireccionarAdmin('/admin/inicio','/admin/inicio')">
+            <a class="navbar-brand" href="#"  @click.prevent="redireccionar('Inicio')">
                 
                 <img :src="$baseUrlVue('img/logo/logotipo-version-5.png')"  height="40" class="d-inline-block align-top" alt="">
             </a>

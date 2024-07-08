@@ -340,7 +340,7 @@ import { Modal } from "bootstrap";
         },
         listarProyectos: [],
         listarTareas: [],
-        deshabilitado: false,
+
         modal: {
           tipo: '',
           titulo: '',

@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-lg fixed-top shadow header-personal navbar-inverse bg-inverse">
-            <a class="nav-link" href="#"  @click.prevent="redireccionar('Inicio')">
+            <a class="navbar-brand" href="#"  @click.prevent="redireccionar('Inicio')">
                 <img :src="$baseUrlVue('img/logo/logotipo-version-5.png')"  height="40" class="d-inline-block align-top menu-desktop" alt="">
                  
             </a>
